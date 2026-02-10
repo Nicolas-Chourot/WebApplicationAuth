@@ -1,0 +1,105 @@
+﻿@{
+    string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+    string action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+    string indexAction = "index"; // todo : Set the index action name in App_Start/RouteConfig.cs
+    int currentId = 0; // todo : Get current Id from Session
+    bool search = false; // todo : Get search mode from Session
+}
+
+<div class="section roundedBorder">
+    <div class="headerMenu">
+        <i class="siteIcon"></i>
+        <!-- Direct action context command icons -->
+        @switch (action)
+        {
+            case "login":
+                <div class="pageTitle">
+                    Application Web
+                </div>
+                break;
+            case "subscribe":
+                <div class="pageTitle">Inscription</div>
+                <div id="mainMenuPanel" class="menu">
+                    <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
+                    <a class="cmdIcon fa fa-square-xmark" title="Annuler" onclick="history.back()"></a>
+                </div>
+                break;
+            case "index": // todo : Set the home action name
+                <div class="pageTitle">Application Web</div>
+                <div id="mainMenuPanel" class="menu">
+                    <a href="/@controller/Create" class="cmdIcon fa fa-circle-plus" title="Ajouter..."></a>
+                    <a href="/@controller/ToggleSearch" id="cmdToggleSearch" class="cmdIcon fa fa-search" title="Recherche..."></a>
+                    <!-- Dropdown menu -->
+                    <div id="menu" class="dropdown ms-auto">
+                        <!-- Menu acces icon -->
+                        <div data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="cmdIcon fa fa-bars" title="Menu"></i>
+                        </div>
+                        <!-- Menu items -->
+                        <div class="dropdown-menu noselect" id="DDMenu">
+                            <div class="dropdown-item item-layout">
+                                <i class="menuIcon fa fa-address-card"></i>Profil...
+                            </div>
+                            <div class="dropdown-item item-layout">
+                                <i class="menuIcon fa fa-sign-out"></i> Déconnexion...
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item item-layout">
+                                <i class="menuIcon fa fa-users"></i> Gestion des usagers...
+                            </div>
+                            <div class="dropdown-item item-layout">
+                                <i class="menuIcon fa fa-calendar-days"></i> Historique de connexions...
+                            </div>
+
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item item-layout">
+                                <i class="menuIcon fa fa-info-circle"></i>
+                                <a href="/@controller/About">À propos...</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                break;
+            case "details":
+                <div class="pageTitle">Détails</div>
+                <div id="mainMenuPanel" class="menu">
+                    <a href="/@controller/Edit" class="cmdIcon fa fa-pen-to-square" title="Modifier..."></a>
+                    <i class="cmdIcon fa fa-trash-can"
+                       title="Effacer"
+                       onclick="bootbox.confirm('<b style=color:red>Effacer ?</h3>', function(result){ if (result) window.location = '/@controller/Delete'; })">
+                    </i>
+                    <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="retour"></a>
+                </div>
+                break;
+            case "create":
+                <div class="pageTitle">Ajout</div>
+                <div id="mainMenuPanel" class="menu">
+                    <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
+                    <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
+                </div>
+                break;
+            case "edit":
+                <div class="pageTitle">Modification</div>
+                <div id="mainMenuPanel" class="menu">
+                    <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
+                    <a href="/@controller/Details/@currentId" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
+                </div>
+                break;
+            case "about":
+                <div class="pageTitle">À propos</div>
+                <div id="mainMenuPanel" class="menu">
+                    <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
+                </div>
+                break;
+        }
+
+    </div>
+</div>
+@if (action == indexAction && search)
+{
+    <div class="flex">
+        <!-- todo -->
+    </div>
+}
+
+

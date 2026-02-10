@@ -1,0 +1,37 @@
+﻿.event-form {
+    max-width:320px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    text-align:center;
+}
+.profil-form {
+    max-width: 320px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+}
+
+.event-form input {
+    margin-top:8px;
+    width:100%;
+}
+
+    .profil-form input {
+        margin-top: 8px;
+        width: 100%;
+    }
+
+.passwordLayout {
+    display:grid; 
+    grid-template-columns:auto 0px;
+}
+.passwordShowIcon {
+    transform: translate(-32px, 12px) !important;
+    cursor: pointer;
+    color:#aaa;
+    font-size:1.1em;
+}

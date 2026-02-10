@@ -1,0 +1,63 @@
+﻿using DAL;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using CompareAttribute = System.ComponentModel.DataAnnotations.CompareAttribute;
+
+namespace Models
+{
+    public class User : Record
+    {
+        public User()
+        {
+            Id = 0;
+            Blocked = false;
+            Admin = false;
+            Online = false;
+            Verified = false;
+            Notify = true;
+        }
+        #region Data Members
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+
+        public bool Online { get; set; }
+        public bool Admin { get; set; }
+        public bool Blocked { get; set; }
+        public bool Verified { get; set; }
+        public bool Notify { get; set; }
+
+        const string Avatars_Folder = @"/App_Assets/Users/";
+        const string Default_Avatar = @"no_avatar.png";
+        [ImageAsset(Avatars_Folder, Default_Avatar)]
+        public string Avatar { get; set; } = Avatars_Folder + Default_Avatar;
+
+        #endregion
+
+        #region View members
+        [JsonIgnore]
+        public bool IsAdmin { get { return Admin; } }
+        [JsonIgnore]
+        public bool IsBlocked { get { return Blocked; } }
+        [JsonIgnore]
+        public bool IsOnline { get { return Online; } }
+        #endregion
+
+        [JsonIgnore]
+        public List<Login> Logins { get { return DB.Logins.ToList().Where(l => l.UserId == Id).ToList(); } }
+
+        public void DeleteLogins()
+        {
+            foreach (Login login in Logins)
+            {
+                DB.Logins.Delete(login.Id);
+            }
+        }
+
+    }
+}

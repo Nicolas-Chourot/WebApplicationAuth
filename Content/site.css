@@ -1,0 +1,61 @@
+
+
+form {
+    max-width: 4in;
+    margin: auto;
+}
+
+    form label {
+        font-weight: bold;
+    }
+
+    form input {
+        margin-bottom: 8px;
+    }
+
+
+.detailsPanel dl {
+    margin: auto;
+    max-width: 325px;
+    font-size: 1em;
+}
+
+.detailsPanel dt {
+    color: gray;
+}
+
+.detailsPanel dd {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+fieldset {
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    padding: 6px !important;
+    padding-top: 16px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+legend {
+    font-size: 1.0em;
+    font-weight: bold;
+    color: #777;
+    float: none;
+    width: inherit;
+    padding: 0 6px;
+    margin-left: 6px;
+    margin-bottom: -12px;
+    transform: translate(0,-1px);
+    text-align: left;
+}
+
+input, textarea {
+    margin: 0px !important;
+}
+
+label {
+    color: #777;
+}

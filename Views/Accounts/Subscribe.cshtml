@@ -1,0 +1,40 @@
+﻿@model Models.User
+@{
+    ViewBag.Title = "Nouveau compte";
+    Html.RenderPartial("ProfilForm");
+}
+
+
+@section Scripts {
+    <script>
+        var unchangedPasswordCode;
+        var showPassword = false;
+        $(() => {
+            initFormValidation();
+        })
+
+        function toggleShowPassword() {
+            showPassword = !showPassword;
+            if (showPassword) {
+                $("#Password").attr("type", 'text');
+                $("#ConfirmPassword").attr("type", 'text');
+                $("#toggleShowPassword").addClass("fa-eye-slash");
+                $("#toggleShowPassword").removeClass("fa-eye");
+            } else {
+                $("#Password").attr("type", 'password');
+                $("#ConfirmPassword").attr("type", 'password');
+                $("#toggleShowPassword").removeClass("fa-eye-slash");
+                $("#toggleShowPassword").addClass("fa-eye");
+            }
+        }
+        $("#toggleShowPassword").hide();
+        $("#toggleShowPassword").click(() => { toggleShowPassword(); });
+        $("#Password").keyup(() => {
+            if ($("#Password").val() == "")
+                $("#toggleShowPassword").hide();
+            else {
+                $("#toggleShowPassword").show();
+            }
+        })
+    </script>
+}
