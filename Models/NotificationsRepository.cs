@@ -11,17 +11,15 @@ namespace PhotosManager.Models
     {
         public void Push(int targetUserId, string Message)
         {
-            User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
             User targetUser = DB.Users.Get(targetUserId); 
-            if (connectedUser != null && targetUser.Notify)
-                Add(new Notification { TargetUserId = targetUserId, SourceUserId = connectedUser.Id, Message = Message });
+            if (User.ConnectedUser != null && targetUser.Notify)
+                Add(new Notification { TargetUserId = targetUserId, SourceUserId = User.ConnectedUser.Id, Message = Message });
         }
         public Notification Pop()
         {
-            User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
-            if (connectedUser != null)
+            if (User.ConnectedUser != null)
             {
-                Notification notification = ToList().Where(n => n.TargetUserId == connectedUser.Id).FirstOrDefault()?.Copy();
+                Notification notification = ToList().Where(n => n.TargetUserId == User.ConnectedUser.Id).FirstOrDefault()?.Copy();
                 if (notification != null)
                 {
                     Delete(notification.Id);

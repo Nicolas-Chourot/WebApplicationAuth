@@ -179,6 +179,8 @@
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\Accounts\Subscribe.cshtml" />
     <Content Include="Views\Accounts\ProfilForm.cshtml" />
+    <Content Include="Views\Home\ProtectedView.cshtml" />
+    <Content Include="Views\Home\GetData.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

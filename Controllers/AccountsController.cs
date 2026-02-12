@@ -22,8 +22,7 @@ namespace Controllers
         public JsonResult EmailAvailable(string Email)
         {
             bool conflict = false;
-            User connectedUser = (User)Session["ConnectedUser"];
-            int currentId = connectedUser != null ? connectedUser.Id : 0;
+            int currentId = Models.User.ConnectedUser != null? Models.User.ConnectedUser.Id : 0;
             User foundUser = DB.Users.ToList().Where(u => u.Email == Email && u.Id != currentId).FirstOrDefault();
             conflict = foundUser != null;
             return Json(!conflict);
@@ -37,10 +36,16 @@ namespace Controllers
             DB.Events.Add("Logout");
             return RedirectToAction("Login", "Accounts");
         }
+
         public ActionResult Login(string message = "", bool success = true)
         {
-            if (Session["ConnectedUser"] != null)
+            if (Models.User.ConnectedUser != null)
+            {
+                Models.User.ConnectedUser.Online = false;
                 DB.Events.Add("Login", message);
+                Models.User.ConnectedUser = null;
+            }
+            
             Session["LoginSuccess"] = success;
             Session["LoginMessage"] = message;
             if (Session["CurrentLoginEmail"] == null) Session["currentLoginEmail"] = "";
@@ -48,8 +53,7 @@ namespace Controllers
             {
                 Email = (string)Session["currentLoginEmail"]
             };
-            DB.Users.SetOnline(Session["ConnectedUser"], false);
-            Session["ConnectedUser"] = null;
+           
             return View(credential);
         }
         [HttpPost]
@@ -64,7 +68,7 @@ namespace Controllers
             credential.Password = credential.Password.Trim();
             Session["CurrentLoginEmail"] = credential.Email;
             User connectedUser = DB.Users.GetUser(credential);
-            Session["ConnectedUser"] = connectedUser;
+            Models.User.ConnectedUser = connectedUser;
             if (connectedUser == null)
             {
                 Session["LoginSuccess"] = false;
@@ -73,9 +77,9 @@ namespace Controllers
             }
             else
             {
-                if (connectedUser.IsOnline)
+                if (connectedUser.Online)
                 {
-                    Session["ConnectedUser"] = null;
+                    Models.User.ConnectedUser = null;
                     return Redirect("/Accounts/Login?message=Il y a déjà une session ouverte avec cet usager!&success=false");
                 }
                 if (connectedUser.Blocked)
@@ -86,14 +90,14 @@ namespace Controllers
                 {
                     return Redirect("/Accounts/Login?message=Votre compte n'a pas été vérifié. Veuillez consultez le courriel de confirmation d'adresse de courriel.!&success=false");
                 }
-                DB.Users.SetOnline(Session["ConnectedUser"], true);
+                connectedUser.Online = true;
             }
             DB.Events.Add("Login");
-            return RedirectToAction("List", "Photos");
+            return RedirectToAction("ProtectedView", "Home");
         }
         public ActionResult Subscribe()
         {
-            Session["ConnectedUser"] = null;
+            Models.User.ConnectedUser = null;
             Session["CurrentLoginEmail"] = "";
             return View(new User());
         }
@@ -198,7 +202,7 @@ namespace Controllers
         [UserAccess]
         public ActionResult EditProfil()
         {
-            User connectedUser = (User)Session["ConnectedUser"];
+            User connectedUser = Models.User.ConnectedUser;
             if (connectedUser != null)
             {
                 //connectedUser.ConfirmEmail = connectedUser.Email;
@@ -215,7 +219,7 @@ namespace Controllers
         {
             DB.Events.Add("EditProfil");
             bool newEmail = false;
-            User connectedUser = (User)Session["ConnectedUser"];
+            User connectedUser = Models.User.ConnectedUser;
             user.Id = connectedUser.Id;
             user.Blocked = connectedUser.Blocked;
             user.Admin = connectedUser.Admin;
@@ -233,7 +237,7 @@ namespace Controllers
             }
             if (DB.Users.Update(user))
             {
-                Session["ConnectedUser"] = DB.Users.Get(user.Id).Copy();
+                Models.User.ConnectedUser = DB.Users.Get(user.Id);
             }
             if (newEmail)
                 return Redirect("/Accounts/Login?message=Un courriel de vérification d'adresse de courriel vous a été envoyé!");
@@ -244,7 +248,7 @@ namespace Controllers
         public ActionResult DeleteProfil()
         {
             DB.Events.Add("DeleteProfil");
-            User connectedUser = (User)Session["ConnectedUser"];
+            User connectedUser = Models.User.ConnectedUser;
             DB.Users.Delete(connectedUser.Id);
             return RedirectToAction("Login?message=Votre compte a été effacé avec succès!");
         }
@@ -252,10 +256,9 @@ namespace Controllers
         [AdminAccess]
         public ActionResult GetUsers(bool forceRefresh = false)
         {
-            if (forceRefresh || DB.Users.HasChanged)
+            if (DB.Users.HasChanged || forceRefresh)
             {
-                User connectedUser = (User)Session["ConnectedUser"];
-                return PartialView(DB.Users.ToList().Where(u => u.Id != connectedUser.Id).OrderBy(u => u.Name).ToList());
+                return PartialView(DB.Users.ToList().Where(u => u.Id != Models.User.ConnectedUser.Id).OrderBy(u => u.Name).ToList());
             }
             return null;
         }

@@ -16,15 +16,14 @@ namespace PhotosManager.Controllers
             {
                 try
                 {
-                    User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
-                    if (connectedUser == null)
+                    if (User.ConnectedUser == null)
                     {
+                        httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                         return false;
                     }
                     else
                     {
-                        connectedUser = DB.Users.Get(connectedUser.Id);
-                        if (connectedUser.Blocked || !connectedUser.IsOnline)
+                        if (User.ConnectedUser.Blocked || !User.ConnectedUser.Online)
                         {
                             return false;
                         }
@@ -44,17 +43,16 @@ namespace PhotosManager.Controllers
             {
                 try
                 {
-                    User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
-                    if (connectedUser == null)
+                    if (User.ConnectedUser == null)
                     {
+                        httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
                         return false;
                     }
                     else
                     {
-                        connectedUser = DB.Users.Get(connectedUser.Id);
-                        if (!connectedUser.IsAdmin)
+                        if (!User.ConnectedUser.IsAdmin)
                         {
-                            if (connectedUser.Blocked || !connectedUser.IsOnline)
+                            if (User.ConnectedUser.Blocked || !User.ConnectedUser.Online)
                             {
                                 return false;
                             }
@@ -76,21 +74,20 @@ namespace PhotosManager.Controllers
         }
         public class SuperAdminAccess : AuthorizeAttribute
         {
+            // todo refactor users rights encoding
             protected override bool AuthorizeCore(HttpContextBase httpContext)
             {
                 try
                 {
-                    User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
-                    if (connectedUser == null || connectedUser.Id != 1)
+                    if (User.ConnectedUser == null || User.ConnectedUser.Id != 1)
                     {
                         return false;
                     }
                     else
                     {
-                        connectedUser = DB.Users.Get(connectedUser.Id);
-                        if (!connectedUser.IsAdmin)
+                        if (!User.ConnectedUser.IsAdmin)
                         {
-                            if (connectedUser.Blocked || !connectedUser.IsOnline)
+                            if (User.ConnectedUser.Blocked || !User.ConnectedUser.IsOnline)
                             {
                                 return false;
                             }
@@ -110,5 +107,6 @@ namespace PhotosManager.Controllers
                 }
             }
         }
+
     }
 }

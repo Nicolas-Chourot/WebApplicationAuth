@@ -1,1 +1,35 @@
-[{"Name":null,"Email":null,"Password":"4y2E+rQftp1k3ZzyxcROJddmwvAHc/STS2dKFcS6OdY=4VaUV+6gnR31qGYhqnRvGpPdur0=","Online":false,"Admin":false,"Blocked":false,"Verified":false,"Notify":true,"Avatar":"/App_Assets/Users/no_avatar.png","Id":1},{"Name":null,"Email":null,"Password":"Mry3Ay63h+f1gZiq52r4i9o0njsfPARCMkBSVBRvzIY=naLyCGyGwazCShGjybYueFJwlws=","Online":false,"Admin":false,"Blocked":false,"Verified":false,"Notify":true,"Avatar":"/App_Assets/Users/no_avatar.png","Id":2},{"Name":null,"Email":null,"Password":"oeJy7M67mh9Bj0PxrdSZ1sIJ1M5LXtRJOmEQ/ZoSqY4=kFa2mGqBAPBHHFjM8ounbR62CMg=","Online":false,"Admin":false,"Blocked":false,"Verified":false,"Notify":true,"Avatar":"/App_Assets/Users/no_avatar.png","Id":3}]
+[
+  {
+    "Name": "Administrateur",
+    "Email": "admin@app.com",
+    "Password": "O2GYEtzXFrz+F+HNH/YxPihWIGTFLTvYad215JO7b5M=iI76Y3k2BYenrpKy+4zPuqUxVss=",
+    "Admin": true,
+    "Blocked": false,
+    "Verified": true,
+    "Notify": true,
+    "Avatar": "/App_Assets/Users/3b8cc315-9869-4eeb-acb0-9f539b33758a.jpeg",
+    "Id": 1
+  },
+  {
+    "Name": "Nicolas Chourot",
+    "Email": "nicolaschourot@videotron.ca",
+    "Password": "kmUdKsULpnTU4K3EmijmN48f1S+/707O5jNgWpV7ThA=daIZzonczBDXBX5GAAQm2026hRQ=",
+    "Admin": false,
+    "Blocked": false,
+    "Verified": true,
+    "Notify": true,
+    "Avatar": "/App_Assets/Users/67e02a94-2b82-4d76-8396-9cac4db7308d.png",
+    "Id": 2
+  },
+  {
+    "Name": "Nicolas Chourot",
+    "Email": "Nicolas.Chourot@clg.qc.ca",
+    "Password": "pXGeMbngYvsbW2eq5LXHmSKgaYGHZxsh2SX9F8Gsong=/7i5DKgkEGqyb0xLtcKYDSt27aw=",
+    "Admin": false,
+    "Blocked": false,
+    "Verified": true,
+    "Notify": true,
+    "Avatar": "/App_Assets/Users/13070465-e361-4d69-9073-06ebeb3c64ad.jpeg",
+    "Id": 3
+  }
+]

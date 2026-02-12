@@ -48,54 +48,7 @@ namespace Models
                 return user.Copy();
             return null;
         }
-
-        public void SetOnline(Object userObj, bool online)
-        {
-            User user = (User)userObj;
-            if (user != null)
-            {
-                user = DB.Users.Get(user.Id);
-                if (user != null)
-                {
-                    user.Online = online;
-                    Update(user);
-                    ((User)userObj).Online = online;
-
-                    if (online)
-                        HttpContext.Current.Session["CurrentLoginId"] = DB.Logins.Add(user.Id).Id;
-                    else
-                    {
-                        if (HttpContext.Current != null && HttpContext.Current.Session["CurrentLoginId"] != null)
-                        {
-                            DB.Logins.UpdateLogout((int)HttpContext.Current.Session["CurrentLoginId"]);
-                        }
-                    }
-                }
-            }
-        }
-        public void ResetAllUsersOnlineStatus()
-        {
-            List<User> users = new List<User>();
-
-            foreach (User user in DB.Users.ToList())
-            {
-                users.Add(user.Copy());
-            }
-            // Make shure there are no user still online
-            BeginTransaction();
-            try
-            {
-                for (var i = 0; i < users.Count; i++)
-                {
-                    users[i].Online = false;
-                    Update(users[i]);
-                }
-            }
-            finally
-            {
-                EndTransaction();
-            }
-        }
+        /*
         public void SetVerified(Object user, bool Verified)
         {
             if (user != null)
@@ -141,6 +94,7 @@ namespace Models
                 Update((User)user);
             }
         }
+        */
         public override int Add(User user)
         {
             user.Password = HashPassword(user.Password);

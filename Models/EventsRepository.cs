@@ -6,16 +6,15 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Web;
 
-namespace PhotosManager.Models
+namespace Models
 {
     public class EventsRepository : Repository<Event>
     {
         public void Add(string action, string text = "")
         {
-            User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
             Event @event = new Event
             {
-                UserId = connectedUser != null ? connectedUser.Id : 0,
+                UserId = User.ConnectedUser != null ? User.ConnectedUser.Id : 0,
                 CreationDate = DateTime.Now,
                 Action = action,
                 Comment = text

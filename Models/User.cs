@@ -26,7 +26,6 @@ namespace Models
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public bool Online { get; set; }
         public bool Admin { get; set; }
         public bool Blocked { get; set; }
         public bool Verified { get; set; }
@@ -40,6 +39,26 @@ namespace Models
         #endregion
 
         #region View members
+        [JsonIgnore]
+        public bool Online
+        {
+            get
+            {
+                return User.GetOnlineUser().IndexOf(this.Id) > -1;
+            }
+            set
+            {
+                if (value)
+                {
+                    if (User.GetOnlineUser().IndexOf(this.Id) == -1)
+                        User.GetOnlineUser().Add(this.Id);
+                }
+                else
+                {
+                    User.GetOnlineUser().Remove(this.Id);
+                }
+            }
+        }
         [JsonIgnore]
         public bool IsAdmin { get { return Admin; } }
         [JsonIgnore]
@@ -59,5 +78,24 @@ namespace Models
             }
         }
 
+        private static List<int> GetOnlineUser()
+        {
+            if (HttpRuntime.Cache["onlineUsers"] == null)
+                HttpRuntime.Cache["onlineUsers"] = new List<int>();
+            return (List<int>)HttpRuntime.Cache["onlineUsers"];
+        }
+        public static User ConnectedUser
+        {
+            get
+            {
+                if (HttpContext.Current?.Session["ConnectedUser"] != null)
+                    return ((User)HttpContext.Current.Session["ConnectedUser"]).Copy();
+                return null;
+            }
+            set
+            {
+                HttpContext.Current.Session["ConnectedUser"] = value.Copy();
+            }
+        }
     }
 }

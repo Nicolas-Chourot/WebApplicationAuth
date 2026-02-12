@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "ProtectedView";
+}
+
+<div id="panel"></div>
+
+@section Scripts {
+    <script>
+
+        $(() => {
+            initSessionTimeout(30 /*seconds*/);
+            let panel = new AutoRefreshedPanel("panel", "/Home/GetData", 2);
+        })
+    </script>
+}
+
