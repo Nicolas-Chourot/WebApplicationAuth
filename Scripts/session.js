@@ -1,4 +1,29 @@
-﻿function createTimeoutPopup() {
+﻿
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Author: Nicolas Chourot
+// 2026
+//
+// Dependances :
+//     - jquery version > 3.0
+//     - popup.css
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+Todo : complete SessionManager class, add set expiredSessionHandlerUrl(url) /Accounts/ExpiredSession
+const infinite = -1;
+
+class SessionManager {
+    constructor(stallingTime = infinite, timeoutCallBack = null) {
+        this.maxStallingTime = stallingTime;
+        if (timeoutCallBack)
+            this.timeoutCallBack = () => { window.location.replace("/Accounts/ExpiredSession"); };
+
+    }
+}
+let EndSessionAction = '/Accounts/Login'; 
+
+function createTimeoutPopup() {
     $('body').append(`
         <div class='popup'> 
             <div class='popupContent'>
@@ -11,7 +36,7 @@
            
         </div> 
     `);
-}
+}*/
 let currentTimeouID = undefined;
 let initialized = false;
 let timeBeforeRedirect = 5;

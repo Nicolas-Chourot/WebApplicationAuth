@@ -28,6 +28,7 @@ namespace WebApplication.Controllers
 
             return View();
         }
+        [UserAccess]
         public ActionResult GetData(bool forceRefresh = false)
         {
             return PartialView();
