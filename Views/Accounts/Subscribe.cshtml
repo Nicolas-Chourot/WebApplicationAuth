@@ -7,10 +7,22 @@
 
 @section Scripts {
     <script>
-        var unchangedPasswordCode;
         var showPassword = false;
+
         $(() => {
+            new Session(120);
             initFormValidation();
+
+            $("#toggleShowPassword").hide();
+            $("#toggleShowPassword").click(() => { toggleShowPassword(); });
+
+            $("#Password").keyup(() => {
+                if ($("#Password").val() == "")
+                    $("#toggleShowPassword").hide();
+                else {
+                    $("#toggleShowPassword").show();
+                }
+            })
         })
 
         function toggleShowPassword() {
@@ -27,14 +39,6 @@
                 $("#toggleShowPassword").addClass("fa-eye");
             }
         }
-        $("#toggleShowPassword").hide();
-        $("#toggleShowPassword").click(() => { toggleShowPassword(); });
-        $("#Password").keyup(() => {
-            if ($("#Password").val() == "")
-                $("#toggleShowPassword").hide();
-            else {
-                $("#toggleShowPassword").show();
-            }
-        })
+        
     </script>
 }

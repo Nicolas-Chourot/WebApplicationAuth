@@ -7,7 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using static PhotosManager.Controllers.AccessControl;
+using WebApplication;
+using static Controllers.AccessControl;
 
 namespace Controllers
 {
@@ -93,7 +94,7 @@ namespace Controllers
                 connectedUser.Online = true;
             }
             DB.Events.Add("Login");
-            return RedirectToAction("ProtectedView", "Home");
+            return Redirect(RouteConfig.DefaultAction());
         }
         public ActionResult Subscribe()
         {
@@ -209,7 +210,7 @@ namespace Controllers
                 Session["CurrentEditingUserPassword"] = DateTime.Now.Ticks.ToString();
                 return View(connectedUser);
             }
-            return RedirectToAction("Login", "Accounts");
+            return Redirect(RouteConfig.DefaultAction());
         }
 
         [UserAccess]
@@ -242,7 +243,7 @@ namespace Controllers
             if (newEmail)
                 return Redirect("/Accounts/Login?message=Un courriel de vérification d'adresse de courriel vous a été envoyé!");
             else
-                return RedirectToAction("List", "Photos");
+                return Redirect(RouteConfig.DefaultAction());
         }
         [UserAccess]
         public ActionResult DeleteProfil()

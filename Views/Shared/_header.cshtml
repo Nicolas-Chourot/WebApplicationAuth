@@ -18,13 +18,20 @@
                 </div>
                 break;
             case "subscribe":
-                <div class="pageTitle">Inscription</div>
+                <div class="pageTitle">Inscription </div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a class="cmdIcon fa fa-square-xmark" title="Annuler" onclick="history.back()"></a>
                 </div>
                 break;
-            case "index": // todo : Set the home action name
+            case "editprofil":
+                <div class="pageTitle">Profil</div>
+                <div id="mainMenuPanel" class="menu">
+                    <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
+                    <a class="cmdIcon fa fa-square-xmark" title="Annuler" onclick="history.back()"></a>
+                </div>
+                break;
+            case "protectedview": // todo : Set the home action name
                 <div class="pageTitle">Application Web</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="/@controller/Create" class="cmdIcon fa fa-circle-plus" title="Ajouter..."></a>
@@ -38,10 +45,12 @@
                         <!-- Menu items -->
                         <div class="dropdown-menu noselect" id="DDMenu">
                             <div class="dropdown-item item-layout">
-                                <i class="menuIcon fa fa-address-card"></i>Profil...
+                                <i class="menuIcon fa fa-address-card"></i>
+                                <a href="/Accounts/EditProfil">Profil...</a>
                             </div>
                             <div class="dropdown-item item-layout">
-                                <i class="menuIcon fa fa-sign-out"></i> Déconnexion...
+                                <i class="menuIcon fa fa-sign-out"></i> 
+                                <a href="/Accounts/Logout">Déconnexion...</a>
                             </div>
                             <div class="dropdown-divider"></div>
                             <div class="dropdown-item item-layout">
@@ -60,7 +69,7 @@
                     </div>
                 </div>
                 break;
-            case "details":
+                case "details":
                 <div class="pageTitle">Détails</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="/@controller/Edit" class="cmdIcon fa fa-pen-to-square" title="Modifier..."></a>
@@ -71,35 +80,35 @@
                     <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="retour"></a>
                 </div>
                 break;
-            case "create":
+                case "create":
                 <div class="pageTitle">Ajout</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
-            case "edit":
+                case "edit":
                 <div class="pageTitle">Modification</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a href="/@controller/Details/@currentId" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
-            case "about":
+                case "about":
                 <div class="pageTitle">À propos</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
                 </div>
                 break;
-        }
+                }
 
-    </div>
-</div>
-@if (action == indexAction && search)
-{
-    <div class="flex">
-        <!-- todo -->
-    </div>
-}
+            </div>
+        </div>
+        @if (action == indexAction && search)
+        {
+            <div class="flex">
+                <!-- todo -->
+            </div>
+        }
 
 

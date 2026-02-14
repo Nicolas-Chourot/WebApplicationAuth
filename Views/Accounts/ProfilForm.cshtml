@@ -15,7 +15,8 @@
                    placeholder="Nom"
                    required
                    RequireMessage="Veuillez entrer votre adresse de courriel"
-                   InvalidMessage="Caractère illégal" />
+                   InvalidMessage="Caractère illégal" 
+                   value="@Model.Name"/>
         </fieldset>
         <fieldset>
             <legend>Courriel</legend>
@@ -24,14 +25,16 @@
                    placeholder="Courriel"
                    required
                    RequireMessage="Veuillez entrer votre adresse de courriel"
-                   InvalidMessage="Courriel invalide" />
+                   InvalidMessage="Courriel invalide" 
+                   value="@Model.Email"/>
             <input id="ConfirmEmail"
                    matchedInputId="Email"
                    class="form-control MatchedInput"
                    placeholder="Confirmation"
                    required
                    RequireMessage="Veuillez confirmer votre adresse de courriel"
-                   InvalidMessage="Les courriels ne correspondent pas" />
+                   InvalidMessage="Les courriels ne correspondent pas"
+                   value="@Model.Email"/>
         </fieldset>
         <fieldset>
             <legend>Mot de passe</legend>
@@ -42,7 +45,6 @@
                         Modifier
                     </label>
                     <input type="checkbox" name="changePassword" id="changePassword" class="formform-check-inputcontrol" />
-
                 }
             </div>
 

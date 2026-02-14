@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using Antlr.Runtime.Misc;
+using DAL;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -6,10 +7,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PhotosManager.Controllers
+namespace Controllers
 {
+
     public class AccessControl
     {
+        
+
         public class UserAccess : AuthorizeAttribute
         {
             protected override bool AuthorizeCore(HttpContextBase httpContext)

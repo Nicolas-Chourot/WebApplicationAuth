@@ -9,6 +9,11 @@ namespace WebApplication
 {
     public class RouteConfig
     {
+        public static string DefaultAction()
+        {
+            return "/Home/ProtectedView";
+        }
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

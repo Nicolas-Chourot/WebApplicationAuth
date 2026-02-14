@@ -8,7 +8,7 @@ namespace WebApplication
         // Pour plus d'informations sur le regroupement, visitez https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/validation").Include(
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                             "~/Scripts/validation.js",
                             "~/Scripts/jquery-maskedinput.js",
                             "~/Scripts/bootbox.js",

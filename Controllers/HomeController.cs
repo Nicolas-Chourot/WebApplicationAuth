@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using static PhotosManager.Controllers.AccessControl;
+using static Controllers.AccessControl;
 
 namespace WebApplication.Controllers
 {
