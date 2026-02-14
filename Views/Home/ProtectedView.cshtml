@@ -9,7 +9,7 @@
     <script>
 
         $(() => {
-            initSessionTimeout(30 /*seconds*/);
+            new Session(30);
             let panel = new AutoRefreshedPanel("panel", "/Home/GetData", 2);
         })
     </script>

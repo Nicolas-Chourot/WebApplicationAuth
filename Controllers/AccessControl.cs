@@ -32,7 +32,6 @@ namespace PhotosManager.Controllers
                 }
                 catch (Exception ex)
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                     return false;
                 }
             }
@@ -67,7 +66,6 @@ namespace PhotosManager.Controllers
                 }
                 catch (Exception ex)
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                     return false;
                 }
             }
@@ -102,11 +100,11 @@ namespace PhotosManager.Controllers
                 }
                 catch (Exception ex)
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                     return false;
                 }
             }
         }
 
     }
+
 }

@@ -1,5 +1,4 @@
-﻿
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+﻿/////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Author: Nicolas Chourot
 // 2026
@@ -8,23 +7,50 @@
 //     - jquery version > 3.0
 //     - popup.css
 //
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-Todo : complete SessionManager class, add set expiredSessionHandlerUrl(url) /Accounts/ExpiredSession
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Todo : complete SessionManager class, add set expiredSessionHandlerUrl(url) /Accounts/ExpiredSession
 const infinite = -1;
 
-class SessionManager {
-    constructor(stallingTime = infinite, timeoutCallBack = null) {
+class Session {
+    constructor(stallingTime = infinite, timeoutCallBack_URL = "/Accounts/ExpiredSession") {
         this.maxStallingTime = stallingTime;
-        if (timeoutCallBack)
-            this.timeoutCallBack = () => { window.location.replace("/Accounts/ExpiredSession"); };
-
+        this.timeBeforeRedirect = 5;
+        this.currentTimeouID = null;
+        this.timeLeft = this.maxStallingTime;
+        this.setTimeoutCallBack_URL(timeoutCallBack_URL);
+        this.createTimeoutPopup();
+        this.startCountdown();
     }
-}
-let EndSessionAction = '/Accounts/Login'; 
-
-function createTimeoutPopup() {
-    $('body').append(`
+    setTimeoutCallBack_URL(timeoutCallBack_URL) {
+        this.timeoutCallBack_URL = timeoutCallBack_URL;
+        this.timeoutCallBack = () => { window.location.replace(this.timeoutCallBack_URL); };
+    }
+    startCountdown() {
+        clearTimeout(this.currentTimeouID);
+        $(".popup").hide();
+        this.timeLeft = this.maxStallingTime;
+        if (this.timeLeft != infinite) {
+            this.currentTimeouID = setInterval(() => {
+                this.timeLeft = this.timeLeft - 1;
+                if (this.timeLeft > 0) {
+                    if (this.timeLeft <= 10) {
+                        $(".popup").show();
+                        $("#popUpMessage").text("Expiration dans " + this.timeLeft + " secondes");
+                    }
+                } else {
+                    $("#popUpMessage").text('Redirection dans ' + (this.timeBeforeRedirect + this.timeLeft) + " secondes");
+                    if (this.timeLeft <= -this.timeBeforeRedirect) {
+                        clearTimeout(this.currentTimeouID);
+                        this.closePopup();
+                        this.timeoutCallBack();
+                    }
+                }
+            }, 1000);
+        }
+    }
+    createTimeoutPopup() {
+        $('body').append(`
         <div class='popup'> 
             <div class='popupContent'>
                 <div>
@@ -36,52 +62,10 @@ function createTimeoutPopup() {
            
         </div> 
     `);
-}*/
-let currentTimeouID = undefined;
-let initialized = false;
-let timeBeforeRedirect = 5;
-let timeoutCallBack = () => { window.location.replace("/Accounts/ExpiredSession"); };
-let infinite = -1;
-let timeLeft = infinite;
-let maxStallingTime = infinite;
+    }
 
-function initSessionTimeout(stallingTime = infinite, callback = timeoutCallBack) {
-    maxStallingTime = stallingTime;
-    timeoutCallBack = callback;
-    createTimeoutPopup();
-    initialized = true;
-    startCountdown();
-}
-function noTimeout() {
-    //clearTimeout(currentTimeouID);
-    initSessionTimeout((20 * 60) - 60 ); // Default ASP.Net session is 20 minutes allow 60 secondes for user to decide
-}
-
-function startCountdown() {
-    if (!initialized) initTimeout();
-    clearTimeout(currentTimeouID);
-    $(".popup").hide();
-    timeLeft = maxStallingTime;
-    if (timeLeft != infinite) {
-        currentTimeouID = setInterval(() => {
-            timeLeft = timeLeft - 1;
-            if (timeLeft > 0) {
-                if (timeLeft <= 10) {
-                    $(".popup").show();
-                    $("#popUpMessage").text("Expiration dans " + timeLeft + " secondes");
-                }
-            } else {
-                $("#popUpMessage").text('Redirection dans ' + (timeBeforeRedirect + timeLeft) + " secondes");
-                if (timeLeft <= -timeBeforeRedirect) {
-                    clearTimeout(currentTimeouID);
-                    closePopup();
-                    timeoutCallBack();
-                }
-            }
-        }, 1000);
+    closePopup() {
+        $(".popup").hide();
+        this.startCountdown();
     }
 }
-function closePopup() {
-    $(".popup").hide();
-    startCountdown();
-} 
