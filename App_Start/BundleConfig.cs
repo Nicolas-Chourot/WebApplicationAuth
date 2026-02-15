@@ -26,6 +26,7 @@ namespace WebApplication
                         "~/Content/Selection.css",
                         "~/Content/site.css",
                         "~/Content/menu.css",
+                        "~/Content/Icons.css",
                         "~/Content/image-control.css",
                         "~/Content/jqui-custom-datepicker.css"));
         }

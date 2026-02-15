@@ -139,12 +139,25 @@
   <ItemGroup>
     <Content Include="App_Data\iso-3166.txt" />
     <Content Include="Content\Accounts.css" />
+    <Content Include="Content\Icons.css" />
     <Content Include="Content\image-control.css" />
     <Content Include="Content\jqui-custom-datepicker.css" />
     <Content Include="Content\menu.css" />
     <Content Include="Content\popup.css" />
     <Content Include="Content\Selections.css" />
     <Content Include="Content\site.css" />
+    <Content Include="Content\UI-Images\Abort.png" />
+    <Content Include="Content\UI-Images\Accept.png" />
+    <Content Include="Content\UI-Images\admin.png" />
+    <Content Include="Content\UI-Images\Loading_icon.gif" />
+    <Content Include="Content\UI-Images\Masked.png" />
+    <Content Include="Content\UI-Images\na.png" />
+    <Content Include="Content\UI-Images\OffLine.png" />
+    <Content Include="Content\UI-Images\OnLine.png" />
+    <Content Include="Content\UI-Images\PhotoCloudLogo.png" />
+    <Content Include="Content\UI-Images\power_user.png" />
+    <Content Include="Content\UI-Images\shared.png" />
+    <Content Include="Content\UI-Images\timeout.png" />
     <Content Include="Content\_layout.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -193,6 +206,8 @@
     <Content Include="Views\Accounts\RenewPasswordCommand.cshtml" />
     <Content Include="Views\Accounts\EventsJournal.cshtml" />
     <Content Include="Views\Accounts\GetEventsList.cshtml" />
+    <Content Include="Views\Accounts\GetLoginsList.cshtml" />
+    <Content Include="Views\Accounts\LoginsJournal.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
