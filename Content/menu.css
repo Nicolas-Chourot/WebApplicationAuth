@@ -51,7 +51,7 @@
 
 .item-layout {
     display: grid !important;
-    grid-template-columns: 38px auto !important;
+    grid-template-columns: 40px auto !important;
     align-items: center;
     cursor:pointer;
 }

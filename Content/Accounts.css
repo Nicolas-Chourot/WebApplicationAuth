@@ -35,3 +35,63 @@
     color:#aaa;
     font-size:1.1em;
 }
+
+
+.userItem {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}
+
+.eventJournalLayoutx {
+    display: grid;
+    grid-template-columns: 190px 45px 155px auto;
+    align-items: center;
+    height: 32px;
+}
+
+.eventJournalLayout {
+    display: flex;
+    column-gap: 8px;
+    gap:12px;
+    align-items: center;
+}
+
+.UserHeaderAvatar {
+    width: 30px;
+    height: 30px;
+    margin-top: 5px;
+    margin-right: 3px;
+    margin-left: 3px;
+    border-radius: 25px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.UserXSmallAvatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.UserSmallAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 35px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.UserMediumAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}

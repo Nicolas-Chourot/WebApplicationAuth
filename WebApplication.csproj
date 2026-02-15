@@ -121,6 +121,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmailView.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventsRepository.cs" />
     <Compile Include="Models\Login.cs" />
@@ -174,6 +175,12 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="App_Code\Helper.cshtml" />
+    <Content Include="App_Data\Events.json" />
+    <Content Include="App_Data\Logins.json" />
+    <Content Include="App_Data\Notifications.json" />
+    <Content Include="App_Data\RenewPasswordCommands.json" />
+    <Content Include="App_Data\UnverifiedEmails.json" />
+    <Content Include="App_Data\Users.json" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\_header.cshtml" />
     <Content Include="Views\Accounts\Login.cshtml" />
@@ -182,6 +189,10 @@
     <Content Include="Views\Home\ProtectedView.cshtml" />
     <Content Include="Views\Home\GetData.cshtml" />
     <Content Include="Views\Accounts\EditProfil.cshtml" />
+    <Content Include="Views\Accounts\RenewPassword.cshtml" />
+    <Content Include="Views\Accounts\RenewPasswordCommand.cshtml" />
+    <Content Include="Views\Accounts\EventsJournal.cshtml" />
+    <Content Include="Views\Accounts\GetEventsList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

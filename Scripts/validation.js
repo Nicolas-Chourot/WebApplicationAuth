@@ -125,7 +125,8 @@ function remoteValidation(url) {
 }
 async function ConflictTestRequest(serviceUrl, fieldName) {
     let fieldControl = $('#' + fieldName);
-    let testConflictURL = serviceUrl + "?" + fieldName + "=" + fieldControl.val() + "&Id=" + $("#Id").val();
+    let Id = $("#Id").val() == undefined ? 0 : $("#Id").val();
+    let testConflictURL = serviceUrl + "?" + fieldName + "=" + fieldControl.val() + "&Id=" + Id;
     let result = await remoteValidation(testConflictURL);
     if (result)
         fieldControl[0].setCustomValidity(fieldControl.attr("CustomErrorMessage"));

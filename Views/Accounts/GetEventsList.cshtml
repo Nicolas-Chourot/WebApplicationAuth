@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Models.Event>
+@{
+
+    var loggedUsersId = (List<int>)ViewBag.LoggedUsersId;
+    int count = Model.Count();
+    List<Models.Event> events = Model.ToList();
+    int index = 0;
+    bool first = true;
+    int TimeZoneOffset = (int)Session["TimeZoneOffset"];
+    while (index < count)
+    {
+        var evt = events[index];
+        var shiftedEventDate = evt.CreationDate.AddHours((int)Session["TimeZoneOffset"]);
+        int currentDay = shiftedEventDate.Day;
+
+        string open = first ? "open" : "";
+        first = false;
+
+        object param = new { day = evt.CreationDate.ToShortDateString().Trim() };
+        <div style="display:grid; grid-template-columns:auto 20px; align-items:start;">
+            <details @open>
+                <summary>  @shiftedEventDate.ToShortDateString() </summary>
+
+                @do
+                {
+                    <div class="eventJournalLayout">
+                        @if (evt.User != null)
+                        {
+                            <div>@Helper.AvatarUser(evt.User, "UserXSmallAvatar")</div>
+                        }
+                        else
+                        {
+                            <div><img src="/content/UI-Images/na.png" class="UserXSmallAvatar" style="margin-left:12px;margin-right:10px" /> Usager effacé</div>
+                        }
+                        <div>@shiftedEventDate.ToString("HH:mm")</div>
+                        <div>@evt.Action</div>
+                        <div>@evt.Comment</div>
+                    </div>
+                    index++;
+                    if (index < count)
+                    {
+                        evt = events[index];
+                        shiftedEventDate = evt.CreationDate.AddHours((int)Session["TimeZoneOffset"]);
+                    }
+                } while (index < count && currentDay == shiftedEventDate.Day);
+            </details>
+            @Helper.IconConfirmCmdWithParam("Accounts", "DeleteEventDay", param, " redIcon fa-times", "Effacer la journée du " + shiftedEventDate.ToShortDateString())
+        </div>
+    }
+}

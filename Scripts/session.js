@@ -11,7 +11,10 @@
 //
 // Todo : complete SessionManager class, add set expiredSessionHandlerUrl(url) /Accounts/ExpiredSession
 const infinite = -1;
-
+let session = null;
+function newSession(timeout) {
+    session = new Session(timeout);
+}
 class Session {
     constructor(stallingTime = infinite, timeoutCallBack_URL = "/Accounts/ExpiredSession") {
         this.maxStallingTime = stallingTime;
@@ -57,7 +60,7 @@ class Session {
                     <div class='popupHearder'> Attention!</div> 
                     <h4 id='popUpMessage'></h4>
                 </div>
-                <div onclick='closePopup(); ' class='close-btn fa fa-close'></div> 
+                <div id='closePopup' onclick='session.closePopup(); ' class='close-btn fa fa-close'></div> 
             </div>
            
         </div> 
@@ -66,6 +69,6 @@ class Session {
 
     closePopup() {
         $(".popup").hide();
-        this.startCountdown();
+        session.startCountdown();
     }
 }

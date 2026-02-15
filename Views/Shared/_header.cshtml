@@ -4,6 +4,8 @@
     string indexAction = "index"; // todo : Set the index action name in App_Start/RouteConfig.cs
     int currentId = 0; // todo : Get current Id from Session
     bool search = false; // todo : Get search mode from Session
+    bool userConnected = Models.User.ConnectedUser != null;
+    bool userIsAdmin = userConnected ? Models.User.ConnectedUser.IsAdmin:false;
 }
 
 <div class="section roundedBorder">
@@ -43,23 +45,37 @@
                             <i class="cmdIcon fa fa-bars" title="Menu"></i>
                         </div>
                         <!-- Menu items -->
-                        <div class="dropdown-menu noselect" id="DDMenu">
+                        <div class="dropdown-menu noselect" id="DDMenu" style="width:300px !important">
                             <div class="dropdown-item item-layout">
                                 <i class="menuIcon fa fa-address-card"></i>
                                 <a href="/Accounts/EditProfil">Profil...</a>
                             </div>
                             <div class="dropdown-item item-layout">
-                                <i class="menuIcon fa fa-sign-out"></i> 
+                                <i class="menuIcon fa fa-sign-out"></i>
                                 <a href="/Accounts/Logout">Déconnexion...</a>
                             </div>
-                            <div class="dropdown-divider"></div>
-                            <div class="dropdown-item item-layout">
-                                <i class="menuIcon fa fa-users"></i> Gestion des usagers...
-                            </div>
-                            <div class="dropdown-item item-layout">
-                                <i class="menuIcon fa fa-calendar-days"></i> Historique de connexions...
-                            </div>
-
+                            @if (userIsAdmin)
+                            {
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-item item-layout">
+                                    <i class="menuIcon fa fa-users"></i>
+                                    <a href="/Accounts/ManageUsers">
+                                        Gestion des usagers...
+                                    </a>
+                                </div>
+                                <div class="dropdown-item item-layout">
+                                    <i class="menuIcon fa fa-calendar-days"></i>
+                                    <a href="/Accounts/LoginsJournal">
+                                        Historique de connexions...
+                                    </a>
+                                </div>
+                                <div class="dropdown-item item-layout">
+                                    <i class="menuIcon fa fa-gear"></i>
+                                    <a href="/Accounts/EventsJournal">
+                                        Journal d'activités...
+                                    </a>
+                                </div>
+                            }
                             <div class="dropdown-divider"></div>
                             <div class="dropdown-item item-layout">
                                 <i class="menuIcon fa fa-info-circle"></i>
@@ -69,7 +85,7 @@
                     </div>
                 </div>
                 break;
-                case "details":
+            case "details":
                 <div class="pageTitle">Détails</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="/@controller/Edit" class="cmdIcon fa fa-pen-to-square" title="Modifier..."></a>
@@ -80,35 +96,35 @@
                     <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="retour"></a>
                 </div>
                 break;
-                case "create":
+            case "create":
                 <div class="pageTitle">Ajout</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
-                case "edit":
+            case "edit":
                 <div class="pageTitle">Modification</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a href="/@controller/Details/@currentId" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
-                case "about":
+            case "about":
                 <div class="pageTitle">À propos</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
                 </div>
                 break;
-                }
-
-            </div>
-        </div>
-        @if (action == indexAction && search)
-        {
-            <div class="flex">
-                <!-- todo -->
-            </div>
         }
+
+    </div>
+</div>
+@if (action == indexAction && search)
+{
+    <div class="flex">
+        <!-- todo -->
+    </div>
+}
 
 

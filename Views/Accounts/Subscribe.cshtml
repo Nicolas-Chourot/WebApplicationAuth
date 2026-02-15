@@ -12,7 +12,10 @@
         $(() => {
             new Session(120);
             initFormValidation();
-
+            addConflictValidation(
+                "/Accounts/EmailAvailable",
+                'Email' /* field unicity check */,
+                'submit' /* form submit button Id */);
             $("#toggleShowPassword").hide();
             $("#toggleShowPassword").click(() => { toggleShowPassword(); });
 

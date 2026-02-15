@@ -14,20 +14,19 @@ namespace Controllers
 {
     public class AccountsController : Controller
     {
-        [HttpPost]
         public JsonResult EmailExist(string Email)
         {
-            return Json(DB.Users.ToList().Where(u => u.Email == Email).Any());
+            return Json(DB.Users.ToList().Where(u => u.Email == Email).Any(), JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
         public JsonResult EmailAvailable(string Email)
         {
-            bool conflict = false;
+            bool NotAvailable = false;
             int currentId = Models.User.ConnectedUser != null? Models.User.ConnectedUser.Id : 0;
             User foundUser = DB.Users.ToList().Where(u => u.Email == Email && u.Id != currentId).FirstOrDefault();
-            conflict = foundUser != null;
-            return Json(!conflict);
+            NotAvailable = foundUser != null;
+            return Json(NotAvailable,JsonRequestBehavior.AllowGet);
         }
+        
         public ActionResult ExpiredSession()
         {
             return Redirect("/Accounts/Login?message=Session expirée, veuillez vous reconnecter.&success=false");
@@ -35,7 +34,7 @@ namespace Controllers
         public ActionResult Logout()
         {
             DB.Events.Add("Logout");
-            return RedirectToAction("Login", "Accounts");
+            return Redirect("/Accounts/Login");
         }
 
         public ActionResult Login(string message = "", bool success = true)
@@ -129,21 +128,24 @@ namespace Controllers
             }
             return Redirect("/Accounts/Login?message=Erreur de vérification de courriel!&success=false");
         }
-
+        
         public ActionResult RenewPasswordCommand()
         {
-            return View();
+            ViewBag.EmailNotFound = false;
+            return View(new EmailView());
         }
         [HttpPost]
         [ValidateAntiForgeryToken()]
-        public ActionResult RenewPasswordCommand(string Email)
+        public ActionResult RenewPasswordCommand(EmailView EmailView)
         {
-            if (ModelState.IsValid)
+            var user = DB.Users.ToList().Where(u=>u.Email == EmailView.Email).FirstOrDefault();
+            if (user != null)
             {
-                AccountsEmailing.SendEmailRenewPasswordCommand(Url.Action("RenewPassword", "Accounts", null, Request.Url.Scheme), Email);
+                AccountsEmailing.SendEmailRenewPasswordCommand(Url.Action("RenewPassword", "Accounts", null, Request.Url.Scheme), EmailView.Email);
                 return Redirect("/Accounts/Login?message=Un courriel de commande de changement de mot de passe vous a été envoyé si l'adresse fournie est valide.");
             }
-            return View(Email);
+            ViewBag.EmailNotFound = true;
+            return View(EmailView);
         }
         public ActionResult RenewPassword(string code)
         {
@@ -166,7 +168,7 @@ namespace Controllers
         public ActionResult RenewPassword(RenewPasswordView passwordView)
         {
             RenewPasswordCommand command = DB.RenewPasswordCommands.ToList().Where(r => r.VerificationCode == passwordView.Code).FirstOrDefault();
-            if (command != null && ModelState.IsValid)
+            if (command != null)
             {
                 User user = DB.Users.Get(command.UserId);
                 DB.RenewPasswordCommands.Delete(command.Id);
@@ -362,13 +364,13 @@ namespace Controllers
             }
             return null;
         }
-        [AdminAccess]
+        //[AdminAccess]
         public ActionResult EventsJournal()
         {
             //DB.Events.Add("EventsJournal");
             return View();
         }
-        [AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
+        //[AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetEventsList(bool forceRefresh = false)
         {
             if (forceRefresh || DB.Events.HasChanged)
