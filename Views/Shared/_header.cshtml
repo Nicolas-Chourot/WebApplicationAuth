@@ -1,11 +1,12 @@
 ﻿@{
     string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
     string action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
-    string indexAction = "index"; // todo : Set the index action name in App_Start/RouteConfig.cs
+
     int currentId = 0; // todo : Get current Id from Session
     bool search = false; // todo : Get search mode from Session
     bool userConnected = Models.User.ConnectedUser != null;
     bool userIsAdmin = userConnected ? Models.User.ConnectedUser.IsAdmin:false;
+    string index = RouteConfig.DefaultAction();
 }
 
 <div class="section roundedBorder">
@@ -93,14 +94,14 @@
                        title="Effacer"
                        onclick="bootbox.confirm('<b style=color:red>Effacer ?</h3>', function(result){ if (result) window.location = '/@controller/Delete'; })">
                     </i>
-                    <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="retour"></a>
+                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="retour"></a>
                 </div>
                 break;
             case "create":
                 <div class="pageTitle">Ajout</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
-                    <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
+                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
             case "edit":
@@ -110,17 +111,35 @@
                     <a href="/@controller/Details/@currentId" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
+            case "loginsjournal":
+                <div class="pageTitle">Journal des connexions</div>
+                <div id="mainMenuPanel" class="menu">
+                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
+                </div>
+                break;
+            case "eventsjournal":
+                <div class="pageTitle">Journal des activitées</div>
+                <div id="mainMenuPanel" class="menu">
+                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
+                </div>
+                break;
+            case "manageusers":
+                <div class="pageTitle">Gestion des usagers</div>
+                <div id="mainMenuPanel" class="menu">
+                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
+                </div>
+                break;
             case "about":
                 <div class="pageTitle">À propos</div>
                 <div id="mainMenuPanel" class="menu">
-                    <a href="/@controller/@indexAction" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
+                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
                 </div>
                 break;
         }
 
     </div>
 </div>
-@if (action == indexAction && search)
+@if (action == index && search)
 {
     <div class="flex">
         <!-- todo -->

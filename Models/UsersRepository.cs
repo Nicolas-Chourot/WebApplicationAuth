@@ -48,53 +48,7 @@ namespace Models
                 return user.Copy();
             return null;
         }
-        /*
-        public void SetVerified(Object user, bool Verified)
-        {
-            if (user != null)
-            {
-                ((User)user).Verified = Verified;
-                Update((User)user);
-            }
-        }
-
-        public void SetAdmin(Object user, bool Admin)
-        {
-            if (user != null)
-            {
-                ((User)user).Admin = Admin;
-                Update((User)user);
-            }
-        }
-        public void SetOnline(int userId, bool online)
-        {
-            User user = Get(userId);
-            if (user != null)
-            {
-                ((User)user).Online = online;
-                Update((User)user);
-            }
-        }
-        public void SetVerified(int userId, bool Verified)
-        {
-            User user = Get(userId);
-            if (user != null)
-            {
-                ((User)user).Verified = Verified;
-                Update((User)user);
-            }
-        }
-
-        public void SetAdmin(int userId, bool Admin)
-        {
-            User user = Get(userId);
-            if (user != null)
-            {
-                ((User)user).Admin = Admin;
-                Update((User)user);
-            }
-        }
-        */
+        
         public override int Add(User user)
         {
             user.Password = HashPassword(user.Password);

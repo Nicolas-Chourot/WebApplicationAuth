@@ -19,14 +19,13 @@
         object param = new { day = login.LoginDate.ToShortDateString().Trim() };
         <div style="display:grid; grid-template-columns:auto 20px; align-items:start;">
             <details @open>
-                <summary>  @shiftedEventDate.ToShortDateString() </summary>
-
+                <summary>@shiftedEventDate.ToShortDateString() </summary>
                 @do
                 {
                     if (login.User != null)
                     {
                         <div class="loginJournalLayout">
-                            <div>@Helper.AvatarUser(login.User, "UserSmallAvatar")</div>
+                            <div style="width:200px">@Helper.AvatarUser(login.User, "UserSmallAvatar")</div>
                             <div>@shiftedEventDate.ToString("HH:mm")</div>
 
                             @if (shiftedEventDate != shiftedLogoutDate)
@@ -74,7 +73,7 @@
                     }
                 } while (index < count && currentDay == shiftedEventDate.Day);
             </details>
-            @Helper.IconConfirmCmdWithParam("Accounts", "DeleteJournalDay", param, " redIcon fa-times", "Effacer la journée du " + shiftedEventDate.ToShortDateString())
+            @Helper.IconConfirmCmdWithParam("Accounts", "DeleteLoginsDay", param, " redIcon fa-times", "Effacer la journée du " + shiftedEventDate.ToShortDateString())
         </div>
     }
 }

@@ -10,7 +10,7 @@ namespace PhotosManager.Models
 {
     public class LoginsRepository : Repository<Login>
     {
-        public Login Add(int userId)
+        public int Add(int userId)
         {
             try
             {
@@ -26,12 +26,12 @@ namespace PhotosManager.Models
                     login.CountryCode = gl.countryCode;
                 }
                 login.Id = DB.Logins.Add(login);
-                return login;
+                return login.Id;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"AddLogin failed : Message - {ex.Message}");
-                return null;
+                return 0;
             }
         }
         public bool UpdateLogout(int loginId)

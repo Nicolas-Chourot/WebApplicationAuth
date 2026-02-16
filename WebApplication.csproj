@@ -208,6 +208,8 @@
     <Content Include="Views\Accounts\GetEventsList.cshtml" />
     <Content Include="Views\Accounts\GetLoginsList.cshtml" />
     <Content Include="Views\Accounts\LoginsJournal.cshtml" />
+    <Content Include="Views\Accounts\ManageUsers.cshtml" />
+    <Content Include="Views\Accounts\GetUsers.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

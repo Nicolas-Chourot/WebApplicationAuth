@@ -33,16 +33,18 @@ namespace Controllers
         }
         public ActionResult Logout()
         {
-            DB.Events.Add("Logout");
             return Redirect("/Accounts/Login");
         }
 
         public ActionResult Login(string message = "", bool success = true)
         {
+            if (Session["CurrentLoginId"] == null) Session["CurrentLoginId"] = 0;
+
             if (Models.User.ConnectedUser != null)
             {
                 Models.User.ConnectedUser.Online = false;
-                DB.Events.Add("Login", message);
+                DB.Logins.UpdateLogout((int)Session["CurrentLoginId"]);
+                DB.Events.Add("Logout");
                 Models.User.ConnectedUser = null;
             }
             
@@ -67,7 +69,7 @@ namespace Controllers
             credential.Email = credential.Email.Trim();
             credential.Password = credential.Password.Trim();
             Session["CurrentLoginEmail"] = credential.Email;
-            User connectedUser = DB.Users.GetUser(credential);
+            var connectedUser = DB.Users.GetUser(credential);
             Models.User.ConnectedUser = connectedUser;
             if (connectedUser == null)
             {
@@ -92,6 +94,7 @@ namespace Controllers
                 }
                 connectedUser.Online = true;
             }
+            Session["CurrentLoginId"] = DB.Logins.Add(Models.User.ConnectedUser.Id);
             DB.Events.Add("Login");
             return Redirect(RouteConfig.DefaultAction());
         }
@@ -106,6 +109,7 @@ namespace Controllers
         public ActionResult Subscribe(User user)
         {
             DB.Users.Add(user);
+            DB.Events.Add("Subscribe");
             AccountsEmailing.SendEmailVerification(Url.Action("VerifyUser", "Accounts", null, Request.Url.Scheme), user);
             return Redirect("/Accounts/Login?message=Création de compte effectuée avec succès! Un courriel de confirmation d'adresse vous a été envoyé.");
         }
@@ -122,6 +126,7 @@ namespace Controllers
                     newlySubscribedUser.Verified = true;
                     Session["CurrentLoginEmail"] = newlySubscribedUser.Email;
                     DB.Users.Update(newlySubscribedUser);
+                    DB.Events.Add("User verified");
                     AccountsEmailing.SendEmailUserStatusChanged("Votre adresse de courriel a été confirmée.", newlySubscribedUser);
                     return Redirect("/Accounts/Login?message=Votre adresse de courriel a été vérifiée avec succès!");
                 }
@@ -220,7 +225,7 @@ namespace Controllers
         [ValidateAntiForgeryToken()]
         public ActionResult EditProfil(User user)
         {
-            DB.Events.Add("EditProfil");
+            DB.Events.Add("EditeProfil");
             bool newEmail = false;
             User connectedUser = Models.User.ConnectedUser;
             user.Id = connectedUser.Id;
@@ -337,7 +342,7 @@ namespace Controllers
                 User user = DB.Users.Get(id);
                 if (user != null)
                 {
-                    DB.Events.Add("DeleteUser", user.Name);
+                    DB.Events.Add("DeleteUser " + user.Name);
                     string message = "Votre compte a été effacé par l'administrateur du site.";
                     DB.Users.Delete(id);
                     AccountsEmailing.SendEmailUserStatusChanged(message, user);
@@ -349,31 +354,29 @@ namespace Controllers
         [AdminAccess]
         public ActionResult LoginsJournal()
         {
-            DB.Events.Add("LoginsJournal");
             return View();
         }
         [AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetLoginsList(bool forceRefresh = false)
         {
-            if (forceRefresh || DB.Users.HasChanged)
+            if (DB.Users.HasChanged || forceRefresh)
             {
                 List<User> onlineUsers = DB.Users.ToList().Where(u => u.Online).ToList();
                 ViewBag.LoggedUsersId = onlineUsers.Select(u => u.Id).ToList();
-                List<Login> events = DB.Logins.ToList().OrderByDescending(l => l.LoginDate).ToList();
-                return PartialView(events);
+                List<Login> logins = DB.Logins.ToList().OrderByDescending(l => l.LoginDate).ToList();
+                return PartialView(logins);
             }
             return null;
         }
         //[AdminAccess]
         public ActionResult EventsJournal()
         {
-            //DB.Events.Add("EventsJournal");
             return View();
         }
         //[AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetEventsList(bool forceRefresh = false)
         {
-            if (forceRefresh || DB.Events.HasChanged)
+            if (DB.Events.HasChanged || forceRefresh)
             {
                 List<Event> events = DB.Events.ToList().OrderByDescending(l => l.CreationDate).ToList();
                 return PartialView(events);
@@ -381,9 +384,8 @@ namespace Controllers
             return null;
         }
         [SuperAdminAccess]
-        public ActionResult DeleteJournalDay(string day)
+        public ActionResult DeleteLoginsDay(string day)
         {
-            DB.Events.Add("DeleteJournalDay", day);
             try
             {
                 DateTime date = DateTime.Parse(day);
@@ -393,14 +395,14 @@ namespace Controllers
             return RedirectToAction("LoginsJournal");
         }
         [SuperAdminAccess]
-        public ActionResult DeleteEventDay(string day)
+        public ActionResult DeleteEventsDay(string day)
         {
-            DB.Events.Add("DeleteEventDay", day);
             try
             {
                 DateTime date = DateTime.Parse(day);
                 DB.Events.DeleteEventsJournalDay(date);
             }
+
             catch (Exception) { }
             return RedirectToAction("EventsJournal");
         }

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Gestion des usagers";
+}
+
+<div id="UsersPanel"><!-- Auto refreshed --></div>
+
+
+@section Scripts {
+
+    <script>
+        $(() => {
+            let UsersPanel = new AutoRefreshedPanel("UsersPanel", "@Url.Action("GetUsers")", 5 /*seconds*/, attachEvents);
+            function attachEvents() {
+                $(".deleteCmd").click(function (e) {
+                    var userId = $(this).attr("userId");
+                    UsersPanel.confirmedCommand($(this).attr("title") + "?", "/Accounts/DeleteUser/" + userId);
+                })
+                $(".promoteCmd").click(function (e) {
+                    var userId = $(this).attr("userId");
+                    UsersPanel.confirmedCommand($(this).attr("title") + "?", "/Accounts/TogglePromoteUser/" + userId);
+                })
+                $(".blockCmd").click(function (e) {
+                    var userId = $(this).attr("userId");
+                    UsersPanel.confirmedCommand($(this).attr("title") + "?", "/Accounts/ToggleBlockUser/" + userId);
+                })
+                $(".forceVerifyCmd").click(function (e) {
+                    var userId = $(this).attr("userId");
+                    UsersPanel.confirmedCommand($(this).attr("title") + "?", "/Accounts/ForceVerifyUser/" + userId);
+                })
+                //
+
+            }
+        })
+    </script>
+}

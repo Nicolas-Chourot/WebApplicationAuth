@@ -51,7 +51,9 @@ namespace Models
                 if (value)
                 {
                     if (User.GetOnlineUser().IndexOf(this.Id) == -1)
+                    {
                         User.GetOnlineUser().Add(this.Id);
+                    }
                 }
                 else
                 {
