@@ -44,8 +44,15 @@ namespace Controllers
             {
                 Models.User.ConnectedUser.Online = false;
                 DB.Logins.UpdateLogout((int)Session["CurrentLoginId"]);
-                DB.Events.Add("Logout");
-                Models.User.ConnectedUser = null;
+                if (success)
+                {
+                    DB.Events.Add("Logout");
+                }
+                else
+                {
+                    DB.Events.Add("Expired/blocked");
+                }
+                    Models.User.ConnectedUser = null;
             }
             
             Session["LoginSuccess"] = success;
@@ -225,7 +232,7 @@ namespace Controllers
         [ValidateAntiForgeryToken()]
         public ActionResult EditProfil(User user)
         {
-            DB.Events.Add("EditeProfil");
+            DB.Events.Add("EditProfil");
             bool newEmail = false;
             User connectedUser = Models.User.ConnectedUser;
             user.Id = connectedUser.Id;
@@ -359,7 +366,7 @@ namespace Controllers
         [AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetLoginsList(bool forceRefresh = false)
         {
-            if (DB.Users.HasChanged || forceRefresh)
+            if (DB.Logins.HasChanged || forceRefresh)
             {
                 List<User> onlineUsers = DB.Users.ToList().Where(u => u.Online).ToList();
                 ViewBag.LoggedUsersId = onlineUsers.Select(u => u.Id).ToList();
