@@ -42,6 +42,7 @@ namespace Models
         [JsonIgnore]
         public bool Online
         {
+            // maintain in server cache a list of online users Id
             get
             {
                 return User.GetOnlineUser().IndexOf(this.Id) > -1;
@@ -51,15 +52,10 @@ namespace Models
                 if (value)
                 {
                     if (User.GetOnlineUser().IndexOf(this.Id) == -1)
-                    {
                         User.GetOnlineUser().Add(this.Id);
-                    }
                 }
                 else
-                {
                     User.GetOnlineUser().Remove(this.Id);
-                    //User.ConnectedUser = null;
-                }
             }
         }
         [JsonIgnore]
@@ -87,12 +83,23 @@ namespace Models
                 HttpRuntime.Cache["onlineUsers"] = new List<int>();
             return (List<int>)HttpRuntime.Cache["onlineUsers"];
         }
+
         public static User ConnectedUser
         {
             get
             {
                 if (HttpContext.Current?.Session["ConnectedUser"] != null)
+                {
+                    if (DB.Users.HasChanged)
+                    {
+                        User connectedUser = ((User)HttpContext.Current.Session["ConnectedUser"]);
+                        if (connectedUser != null)
+                            connectedUser = DB.Users.Get(connectedUser.Id);
+                        // update connected user
+                        HttpContext.Current.Session["ConnectedUser"] = connectedUser;
+                    }
                     return ((User)HttpContext.Current.Session["ConnectedUser"]).Copy();
+                }
                 return null;
             }
             set
