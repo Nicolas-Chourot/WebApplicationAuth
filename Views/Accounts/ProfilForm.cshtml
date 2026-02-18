@@ -2,6 +2,7 @@
 @model Models.User
 @{
     bool subscribing = Model.Id == 0;
+    string notifyValue = Model.Notify ? "checked" : "";
 }
 
 @using (Html.BeginForm())
@@ -42,10 +43,8 @@
             <div style="display:grid; grid-template-columns:auto 15px; gap:6px">
                 @if (!subscribing)
                 {
-                    <label for="changePassword" class="" style="text-align:right;">
-                        Modifier
-                    </label>
-                    <input type="checkbox" name="changePassword" id="changePassword" class="formform-check-inputcontrol" />
+                    <label for="changePassword" class="" style="text-align:right;">Modifier</label>
+                    <input type="checkbox" name="changePassword" id="changePassword" />
                 }
             </div>
 
@@ -73,9 +72,8 @@
         <fieldset>
             <legend>Notifications</legend>
             <div style="text-align:left; display: grid; grid-template-columns:15px 10px auto">
-                @Html.CheckBoxFor(m => m.Notify, new { htmlAttributes = new { @class = "formform-check-inputcontrol" } })
-                &nbsp;
-                <label for="Notify">Activées</label>
+                <input type="checkbox" name="NotifyCB" id="Notify" @notifyValue/>
+                <label for="NotifyCB" style="margin-left:4px">Activées</label>
             </div>
         </fieldset>
         <fieldset>

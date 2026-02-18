@@ -27,7 +27,7 @@ namespace Controllers
                     }
                     else
                     {
-                        if (User.ConnectedUser.Blocked || !User.ConnectedUser.Online)
+                        if (User.ConnectedUser.Blocked)
                         {
                             return false;
                         }
@@ -55,7 +55,7 @@ namespace Controllers
                     {
                         if (!User.ConnectedUser.IsAdmin)
                         {
-                            if (User.ConnectedUser.Blocked || !User.ConnectedUser.Online)
+                            if (User.ConnectedUser.Blocked)
                             {
                                 return false;
                             }

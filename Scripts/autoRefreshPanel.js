@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////let EndSessionAction = '/Accounts/Login'; 
 
 let DefaultPeriodicRefreshRate = 15 /* 15 seconds */;
-
+let EndSessionAction = '/Accounts/Login';
 class AutoRefreshedPanel {
     constructor(panelId, contentServiceURL, refreshRate = DefaultPeriodicRefreshRate, postRefreshCallback = null) {
         this.contentServiceURL = contentServiceURL;

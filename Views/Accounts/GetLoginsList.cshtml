@@ -24,7 +24,7 @@
                 {
                     if (login.User != null)
                     {
-                        <div class="loginJournalLayout">
+                        <div class="journalLayout">
                             <div style="width:200px">@Helper.AvatarUser(login.User, "UserSmallAvatar")</div>
                             <div>@shiftedEventDate.ToString("HH:mm")</div>
 
@@ -73,7 +73,9 @@
                     }
                 } while (index < count && currentDay == shiftedEventDate.Day);
             </details>
-            @Helper.IconConfirmCmdWithParam("Accounts", "DeleteLoginsDay", param, " redIcon fa-times", "Effacer la journée du " + shiftedEventDate.ToShortDateString())
+            <div style="margin-top:4px;margin-left:2px;">
+                @Helper.IconConfirmCmdWithParam("Accounts", "DeleteLoginsDay", param, " redIcon fa-times", "Effacer la journée du " + shiftedEventDate.ToShortDateString())
+            </div>
         </div>
     }
 }

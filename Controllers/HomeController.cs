@@ -7,7 +7,7 @@ using static Controllers.AccessControl;
 
 namespace WebApplication.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -33,6 +33,7 @@ namespace WebApplication.Controllers
         {
             return PartialView();
         }
+
 
         [UserAccess]
         public ActionResult ProtectedView()

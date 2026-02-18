@@ -66,24 +66,24 @@ details {
     @media (prefers-reduced-motion: no-preference) {
         interpolate-size: allow-keywords;
     }
-}
 
-    details::details-content {
+
+    &::details-content {
         opacity: 0;
         block-size: 0;
         overflow-y: clip;
         transition: content-visibility 1s allow-discrete, opacity 0.75s, block-size 0.75s;
     }
 
-    details[open]::details-content {
+    &[open]::details-content {
         opacity: 1;
         block-size: auto;
     }
 
-    details div {
+    & div {
         margin-left: 6px;
     }
-
+}
 summary {
     background: lightgray;
     padding-left: 8px;
@@ -91,8 +91,11 @@ summary {
     border: 1px solid white;
     border-radius: 6px;
     font-weight: bold;
-}
 
-    summary::marker {
+
+    &::marker {
         font-size: 20px;
     }
+}
+
+   

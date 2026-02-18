@@ -21,12 +21,12 @@ namespace Controllers
         public JsonResult EmailAvailable(string Email)
         {
             bool NotAvailable = false;
-            int currentId = Models.User.ConnectedUser != null? Models.User.ConnectedUser.Id : 0;
+            int currentId = Models.User.ConnectedUser != null ? Models.User.ConnectedUser.Id : 0;
             User foundUser = DB.Users.ToList().Where(u => u.Email == Email && u.Id != currentId).FirstOrDefault();
             NotAvailable = foundUser != null;
-            return Json(NotAvailable,JsonRequestBehavior.AllowGet);
+            return Json(NotAvailable, JsonRequestBehavior.AllowGet);
         }
-        
+
         public ActionResult ExpiredSession()
         {
             return Redirect("/Accounts/Login?message=Session expirée, veuillez vous reconnecter.&success=false");
@@ -38,23 +38,15 @@ namespace Controllers
 
         public ActionResult Login(string message = "", bool success = true)
         {
-            if (Session["CurrentLoginId"] == null) Session["CurrentLoginId"] = 0;
-
             if (Models.User.ConnectedUser != null)
             {
+                if (success) DB.Events.Add("Logout"); else DB.Events.Add("Expired/blocked");
+                if (Models.User.ConnectedUser != null)
+                    DB.Logins.UpdateLogout(Models.User.ConnectedUser.Id);
                 Models.User.ConnectedUser.Online = false;
-                DB.Logins.UpdateLogout((int)Session["CurrentLoginId"]);
-                if (success)
-                {
-                    DB.Events.Add("Logout");
-                }
-                else
-                {
-                    DB.Events.Add("Expired/blocked");
-                }
-                    Models.User.ConnectedUser = null;
+                Models.User.ConnectedUser = null;
             }
-            
+
             Session["LoginSuccess"] = success;
             Session["LoginMessage"] = message;
             if (Session["CurrentLoginEmail"] == null) Session["currentLoginEmail"] = "";
@@ -62,7 +54,7 @@ namespace Controllers
             {
                 Email = (string)Session["currentLoginEmail"]
             };
-           
+
             return View(credential);
         }
         [HttpPost]
@@ -76,9 +68,9 @@ namespace Controllers
             credential.Email = credential.Email.Trim();
             credential.Password = credential.Password.Trim();
             Session["CurrentLoginEmail"] = credential.Email;
-            var connectedUser = DB.Users.GetUser(credential);
-            Models.User.ConnectedUser = connectedUser;
-            if (connectedUser == null)
+            User loginUser = DB.Users.GetUser(credential).Copy();
+
+            if (loginUser == null)
             {
                 Session["LoginSuccess"] = false;
                 Session["LoginMessage"] = "Courriel ou mot de passe incorrect";
@@ -86,22 +78,21 @@ namespace Controllers
             }
             else
             {
-                if (connectedUser.Online)
+                if (loginUser.Online)
                 {
-                    Models.User.ConnectedUser = null;
                     return Redirect("/Accounts/Login?message=Il y a déjà une session ouverte avec cet usager!&success=false");
                 }
-                if (connectedUser.Blocked)
+                if (loginUser.Blocked)
                 {
                     return Redirect("/Accounts/Login?message=Votre compte a été bloqué!&success=false");
                 }
-                if (!connectedUser.Verified)
+                if (!loginUser.Verified)
                 {
                     return Redirect("/Accounts/Login?message=Votre compte n'a pas été vérifié. Veuillez consultez le courriel de confirmation d'adresse de courriel.!&success=false");
                 }
-                connectedUser.Online = true;
             }
-            Session["CurrentLoginId"] = DB.Logins.Add(Models.User.ConnectedUser.Id);
+            Models.User.ConnectedUser = loginUser;
+            loginUser.Online = true;
             DB.Events.Add("Login");
             return Redirect(RouteConfig.DefaultAction());
         }
@@ -140,7 +131,7 @@ namespace Controllers
             }
             return Redirect("/Accounts/Login?message=Erreur de vérification de courriel!&success=false");
         }
-        
+
         public ActionResult RenewPasswordCommand()
         {
             ViewBag.EmailNotFound = false;
@@ -150,7 +141,7 @@ namespace Controllers
         [ValidateAntiForgeryToken()]
         public ActionResult RenewPasswordCommand(EmailView EmailView)
         {
-            var user = DB.Users.ToList().Where(u=>u.Email == EmailView.Email).FirstOrDefault();
+            var user = DB.Users.ToList().Where(u => u.Email == EmailView.Email).FirstOrDefault();
             if (user != null)
             {
                 AccountsEmailing.SendEmailRenewPasswordCommand(Url.Action("RenewPassword", "Accounts", null, Request.Url.Scheme), EmailView.Email);
@@ -220,7 +211,6 @@ namespace Controllers
             User connectedUser = Models.User.ConnectedUser;
             if (connectedUser != null)
             {
-                //connectedUser.ConfirmEmail = connectedUser.Email;
                 Session["CurrentEditingUserPassword"] = DateTime.Now.Ticks.ToString();
                 return View(connectedUser);
             }
@@ -230,16 +220,23 @@ namespace Controllers
         [UserAccess]
         [HttpPost]
         [ValidateAntiForgeryToken()]
-        public ActionResult EditProfil(User user)
+        public ActionResult EditProfil(User user, string NotifyCB="off")
         {
+            /* 
+                important note:
+                form checkbox have odd behavior :
+                nothing in playload if not checked
+                "on" if checked 
+            */
+
             DB.Events.Add("EditProfil");
             bool newEmail = false;
             User connectedUser = Models.User.ConnectedUser;
             user.Id = connectedUser.Id;
             user.Blocked = connectedUser.Blocked;
             user.Admin = connectedUser.Admin;
-            user.Online = connectedUser.Online;
             user.Verified = connectedUser.Verified;
+            user.Notify = NotifyCB == "on";
             // check password has been changed 
             if (user.Password == (string)Session["CurrentEditingUserPassword"])
                 user.Password = connectedUser.Password; // no password change
@@ -271,7 +268,7 @@ namespace Controllers
         [AdminAccess]
         public ActionResult GetUsers(bool forceRefresh = false)
         {
-            if (DB.Users.HasChanged || forceRefresh)
+            if (DB.Users.HasChanged || DB.Logins.HasChanged || forceRefresh)
             {
                 return PartialView(DB.Users.ToList().Where(u => u.Id != Models.User.ConnectedUser.Id).OrderBy(u => u.Name).ToList());
             }

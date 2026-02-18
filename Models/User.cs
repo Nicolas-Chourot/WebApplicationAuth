@@ -58,6 +58,7 @@ namespace Models
                 else
                 {
                     User.GetOnlineUser().Remove(this.Id);
+                    //User.ConnectedUser = null;
                 }
             }
         }
@@ -96,7 +97,7 @@ namespace Models
             }
             set
             {
-                HttpContext.Current.Session["ConnectedUser"] = value.Copy();
+                HttpContext.Current.Session["ConnectedUser"] = value;
             }
         }
     }

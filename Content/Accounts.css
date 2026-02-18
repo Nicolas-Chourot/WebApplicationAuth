@@ -43,17 +43,12 @@
     align-items: center;
 }
 
-.eventJournalLayout {
-    display: flex;
-    column-gap: 8px;
-    margin-bottom:6px;
-    align-items: center;
-}
 
-.loginJournalLayout {
+.journalLayout {
     display: flex;
     column-gap: 8px;
-    margin-bottom: 6px;
+    padding-top:4px;
+    margin-bottom: 4px;
     align-items: center;
 }
 
