@@ -40,7 +40,7 @@ namespace Controllers
                 }
             }
         }
-        public class AdminAccess : AuthorizeAttribute
+        public class SuperUserAccess : AuthorizeAttribute
         {
             protected override bool AuthorizeCore(HttpContextBase httpContext)
             {
@@ -48,22 +48,14 @@ namespace Controllers
                 {
                     if (User.ConnectedUser == null)
                     {
-                        httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
+                        httpContext.Response.Redirect("/Accounts/Login?message=Accès en écriture non autorisé!&success=false");
                         return false;
                     }
                     else
                     {
-                        if (!User.ConnectedUser.IsAdmin)
+                        if (User.ConnectedUser.Access < Models.Access.Write || User.ConnectedUser.Blocked)
                         {
-                            if (User.ConnectedUser.Blocked)
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
-                                return false;
-                            }
+                            return false;
                         }
                         return true;
                     }
@@ -74,30 +66,22 @@ namespace Controllers
                 }
             }
         }
-        public class SuperAdminAccess : AuthorizeAttribute
+        public class AdminAccess : AuthorizeAttribute
         {
             // todo refactor users rights encoding
             protected override bool AuthorizeCore(HttpContextBase httpContext)
             {
                 try
                 {
-                    if (User.ConnectedUser == null || User.ConnectedUser.Id != 1)
+                    if (User.ConnectedUser == null)
                     {
                         return false;
                     }
                     else
                     {
-                        if (!User.ConnectedUser.IsAdmin)
+                        if (User.ConnectedUser.Access < Models.Access.Admin || User.ConnectedUser.Blocked)
                         {
-                            if (User.ConnectedUser.Blocked || !User.ConnectedUser.IsOnline)
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
-                                return false;
-                            }
+                            return false;
                         }
                         return true;
                     }
@@ -110,5 +94,4 @@ namespace Controllers
         }
 
     }
-
 }

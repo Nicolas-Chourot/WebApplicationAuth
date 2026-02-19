@@ -5,16 +5,27 @@
     int currentId = 0; // todo : Get current Id from Session
     bool search = false; // todo : Get search mode from Session
     bool userConnected = Models.User.ConnectedUser != null;
-    bool userIsAdmin = userConnected ? Models.User.ConnectedUser.IsAdmin:false;
+    bool userIsAdmin = userConnected ? Models.User.ConnectedUser.IsAdmin : false;
+    bool userCanWrite = userConnected ? Models.User.ConnectedUser.CanWrite : false;
     string index = RouteConfig.DefaultAction();
-}
+    string access = "";
+    if (userConnected)
+    {
+        switch (Models.User.ConnectedUser.Access)
+        {
+            case Models.Access.View: access = "Lecture seule"; break;
+            case Models.Access.Write: access = "Lecture/Écriture"; break;
+            case Models.Access.Admin: access = "Administrateur"; break;
+        }
+    }
+    }
 
 <div class="section roundedBorder">
     <div class="headerMenu">
         <i class="siteIcon"></i>
         <!-- Direct action context command icons -->
         @switch (action)
-        {
+    {
             case "login":
                 <div class="pageTitle">
                     Application Web
@@ -28,7 +39,7 @@
                 </div>
                 break;
             case "editprofil":
-                <div class="pageTitle">Profil</div>
+                <div class="pageTitle">Profil <span style="font-size:0.75em;color:dodgerblue">[@access]</span></div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a class="cmdIcon fa fa-square-xmark" title="Annuler" onclick="history.back()"></a>
@@ -37,7 +48,10 @@
             case "protectedview": // todo : Set the home action name
                 <div class="pageTitle">Application Web</div>
                 <div id="mainMenuPanel" class="menu">
-                    <a href="/@controller/Create" class="cmdIcon fa fa-circle-plus" title="Ajouter..."></a>
+                    @if (userCanWrite)
+                    {
+                        <a href="/@controller/Create" class="cmdIcon fa fa-circle-plus" title="Ajouter..."></a>
+                    }
                     <a href="/@controller/ToggleSearch" id="cmdToggleSearch" class="cmdIcon fa fa-search" title="Recherche..."></a>
                     <!-- Dropdown menu -->
                     <div id="menu" class="dropdown ms-auto">

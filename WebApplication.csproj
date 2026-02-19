@@ -162,6 +162,7 @@
     <Content Include="Content\UI-Images\power_user.png" />
     <Content Include="Content\UI-Images\shared.png" />
     <Content Include="Content\UI-Images\timeout.png" />
+    <Content Include="Content\UI-Images\user.png" />
     <Content Include="Content\_layout.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

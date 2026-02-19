@@ -234,7 +234,7 @@ namespace Controllers
             User connectedUser = Models.User.ConnectedUser;
             user.Id = connectedUser.Id;
             user.Blocked = connectedUser.Blocked;
-            user.Admin = connectedUser.Admin;
+            user.Access = connectedUser.Access;
             user.Verified = connectedUser.Verified;
             user.Notify = NotifyCB == "on";
             // check password has been changed 
@@ -265,7 +265,7 @@ namespace Controllers
             return RedirectToAction("Login?message=Votre compte a été effacé avec succès!");
         }
 
-        [AdminAccess]
+        [SuperUserAccess]
         public ActionResult GetUsers(bool forceRefresh = false)
         {
             if (DB.Users.HasChanged || DB.Logins.HasChanged || forceRefresh)
@@ -275,32 +275,34 @@ namespace Controllers
             return null;
         }
 
-        [AdminAccess]
+        [SuperUserAccess]
         public ActionResult ManageUsers()
         {
             DB.Events.Add("ManageUsers");
             return View();
         }
-        [AdminAccess]
-        public ActionResult TogglePromoteUser(int id)
+        [SuperUserAccess]
+        public ActionResult PromoteUser(int userid, int access)
         {
             DB.Events.Add("TogglePromoteUser");
-            if (id != 1)
+            if (userid != 1)
             {
-                User user = DB.Users.Get(id);
+                User user = DB.Users.Get(userid);
                 if (user != null)
                 {
-                    user.Admin = !user.Admin;
+                    int previousAccess = (int)user.Access;
+                    user.Access = (Models.Access)access;
+
                     DB.Users.Update(user);
-                    string message = user.Admin ?
-                        "Vous avez reçu les droits administrateur" :
-                        "Vous n'avez plus les droits administrateur";
+                    
+                    string message = "Vos ayant droits ont été modifiés : " + user.Access.ToString();
+                    
                     AccountsEmailing.SendEmailUserStatusChanged(message, user);
                 }
             }
             return null;
         }
-        [AdminAccess]
+        [SuperUserAccess]
         public ActionResult ToggleBlockUser(int id)
         {
             DB.Events.Add("ToggleBlockUser");
@@ -320,7 +322,7 @@ namespace Controllers
             }
             return null;
         }
-        [AdminAccess]
+        [SuperUserAccess]
         public ActionResult ForceVerifyUser(int id)
         {
             if (id != 1)
@@ -337,7 +339,7 @@ namespace Controllers
             }
             return null;
         }
-        [AdminAccess]
+        [SuperUserAccess]
         public ActionResult DeleteUser(int id)
         {
 
@@ -355,12 +357,12 @@ namespace Controllers
             return null;
         }
         #region Login journal
-        [AdminAccess]
+        [SuperUserAccess]
         public ActionResult LoginsJournal()
         {
             return View();
         }
-        [AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
+        [SuperUserAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetLoginsList(bool forceRefresh = false)
         {
             if (DB.Logins.HasChanged || forceRefresh)
@@ -387,7 +389,7 @@ namespace Controllers
             }
             return null;
         }
-        [SuperAdminAccess]
+        [AdminAccess]
         public ActionResult DeleteLoginsDay(string day)
         {
             try
@@ -398,7 +400,7 @@ namespace Controllers
             catch (Exception) { }
             return RedirectToAction("LoginsJournal");
         }
-        [SuperAdminAccess]
+        [AdminAccess]
         public ActionResult DeleteEventsDay(string day)
         {
             try

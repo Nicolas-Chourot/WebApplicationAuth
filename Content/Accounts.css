@@ -90,3 +90,17 @@
     background-position: center !important;
     background-repeat: no-repeat !important;
 }
+
+.access {
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+}
+.selectedAccess {
+    width: 40px;
+    height: 40px;
+    border: 0.1px solid dodgerblue;
+    padding: 3px;
+    border-radius:40px;
+    background-color:rgba(0,125,255,0.15);
+}

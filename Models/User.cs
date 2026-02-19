@@ -10,13 +10,15 @@ using CompareAttribute = System.ComponentModel.DataAnnotations.CompareAttribute;
 
 namespace Models
 {
+    public enum Access { View, Write, Admin }
+    
     public class User : Record
     {
         public User()
         {
             Id = 0;
             Blocked = false;
-            Admin = false;
+            Access = Access.View;
             Online = false;
             Verified = false;
             Notify = true;
@@ -26,7 +28,7 @@ namespace Models
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public bool Admin { get; set; }
+        public Access Access { get; set; }
         public bool Blocked { get; set; }
         public bool Verified { get; set; }
         public bool Notify { get; set; }
@@ -59,7 +61,9 @@ namespace Models
             }
         }
         [JsonIgnore]
-        public bool IsAdmin { get { return Admin; } }
+        public bool IsAdmin { get { return Access == Access.Admin; } }
+        [JsonIgnore]
+        public bool CanWrite { get { return Access >= Access.Write; } }
         [JsonIgnore]
         public bool IsBlocked { get { return Blocked; } }
         [JsonIgnore]
