@@ -10,7 +10,7 @@ using CompareAttribute = System.ComponentModel.DataAnnotations.CompareAttribute;
 
 namespace Models
 {
-    public enum Access { View, Write, Admin }
+    public enum Access { Anonymous, View, Write, Admin }
     
     public class User : Record
     {

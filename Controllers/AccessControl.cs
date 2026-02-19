@@ -12,86 +12,47 @@ namespace Controllers
 
     public class AccessControl
     {
-        
+
 
         public class UserAccess : AuthorizeAttribute
         {
-            protected override bool AuthorizeCore(HttpContextBase httpContext)
-            {
-                try
-                {
-                    if (User.ConnectedUser == null)
-                    {
-                        httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
-                        return false;
-                    }
-                    else
-                    {
-                        if (User.ConnectedUser.Blocked)
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-        }
-        public class SuperUserAccess : AuthorizeAttribute
-        {
-            protected override bool AuthorizeCore(HttpContextBase httpContext)
-            {
-                try
-                {
-                    if (User.ConnectedUser == null)
-                    {
-                        httpContext.Response.Redirect("/Accounts/Login?message=Accès en écriture non autorisé!&success=false");
-                        return false;
-                    }
-                    else
-                    {
-                        if (User.ConnectedUser.Access < Models.Access.Write || User.ConnectedUser.Blocked)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-        }
-        public class AdminAccess : AuthorizeAttribute
-        {
-            // todo refactor users rights encoding
-            protected override bool AuthorizeCore(HttpContextBase httpContext)
-            {
-                try
-                {
-                    if (User.ConnectedUser == null)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        if (User.ConnectedUser.Access < Models.Access.Admin || User.ConnectedUser.Blocked)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-        }
+            private Access RequiredAccess { get; set; }
 
+            public UserAccess(Access Access = Access.Anonymous) : base()
+            {
+                RequiredAccess = Access;
+            }
+
+            protected override bool AuthorizeCore(HttpContextBase httpContext)
+            {
+                try
+                {
+                    try
+                    {
+                        if (User.ConnectedUser == null)
+                        {
+                            httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
+                            return false;
+                        }
+                        else
+                        {
+                            if (User.ConnectedUser.Access < RequiredAccess || User.ConnectedUser.Blocked)
+                            {
+                                return false;
+                            }
+                            return true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

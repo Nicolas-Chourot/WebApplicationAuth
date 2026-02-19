@@ -220,7 +220,7 @@ namespace Controllers
         [UserAccess]
         [HttpPost]
         [ValidateAntiForgeryToken()]
-        public ActionResult EditProfil(User user, string NotifyCB="off")
+        public ActionResult EditProfil(User user, string NotifyCB = "off")
         {
             /* 
                 important note:
@@ -256,7 +256,7 @@ namespace Controllers
             else
                 return Redirect(RouteConfig.DefaultAction());
         }
-        [UserAccess]
+        [UserAccess(Models.Access.View)]
         public ActionResult DeleteProfil()
         {
             DB.Events.Add("DeleteProfil");
@@ -265,7 +265,7 @@ namespace Controllers
             return RedirectToAction("Login?message=Votre compte a été effacé avec succès!");
         }
 
-        [SuperUserAccess]
+        [UserAccess(Access.Write)]
         public ActionResult GetUsers(bool forceRefresh = false)
         {
             if (DB.Users.HasChanged || DB.Logins.HasChanged || forceRefresh)
@@ -275,16 +275,16 @@ namespace Controllers
             return null;
         }
 
-        [SuperUserAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult ManageUsers()
         {
             DB.Events.Add("ManageUsers");
             return View();
         }
-        [SuperUserAccess]
-        public ActionResult PromoteUser(int userid, int access)
+        [UserAccess(Access.Admin)]
+        public ActionResult SetUserAccess(int userid, int access)
         {
-            DB.Events.Add("TogglePromoteUser");
+            DB.Events.Add("SetUserAccess");
             if (userid != 1)
             {
                 User user = DB.Users.Get(userid);
@@ -294,15 +294,15 @@ namespace Controllers
                     user.Access = (Models.Access)access;
 
                     DB.Users.Update(user);
-                    
+
                     string message = "Vos ayant droits ont été modifiés : " + user.Access.ToString();
-                    
+
                     AccountsEmailing.SendEmailUserStatusChanged(message, user);
                 }
             }
             return null;
         }
-        [SuperUserAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult ToggleBlockUser(int id)
         {
             DB.Events.Add("ToggleBlockUser");
@@ -322,7 +322,7 @@ namespace Controllers
             }
             return null;
         }
-        [SuperUserAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult ForceVerifyUser(int id)
         {
             if (id != 1)
@@ -339,7 +339,7 @@ namespace Controllers
             }
             return null;
         }
-        [SuperUserAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult DeleteUser(int id)
         {
 
@@ -357,12 +357,12 @@ namespace Controllers
             return null;
         }
         #region Login journal
-        [SuperUserAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult LoginsJournal()
         {
             return View();
         }
-        [SuperUserAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
+        [UserAccess(Access.Admin)] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetLoginsList(bool forceRefresh = false)
         {
             if (DB.Logins.HasChanged || forceRefresh)
@@ -374,12 +374,12 @@ namespace Controllers
             }
             return null;
         }
-        //[AdminAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult EventsJournal()
         {
             return View();
         }
-        //[AdminAccess] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
+        [UserAccess(Access.Admin)] // RefreshTimout = false otherwise periodical refresh with lead to never timed out session
         public ActionResult GetEventsList(bool forceRefresh = false)
         {
             if (DB.Events.HasChanged || forceRefresh)
@@ -389,7 +389,7 @@ namespace Controllers
             }
             return null;
         }
-        [AdminAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult DeleteLoginsDay(string day)
         {
             try
@@ -400,7 +400,7 @@ namespace Controllers
             catch (Exception) { }
             return RedirectToAction("LoginsJournal");
         }
-        [AdminAccess]
+        [UserAccess(Access.Admin)]
         public ActionResult DeleteEventsDay(string day)
         {
             try

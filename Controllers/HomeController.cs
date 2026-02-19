@@ -28,14 +28,14 @@ namespace WebApplication.Controllers
 
             return View();
         }
-        [UserAccess]
+        [UserAccess(Models.Access.View)]
         public ActionResult GetData(bool forceRefresh = false)
         {
             return PartialView();
         }
 
 
-        [UserAccess]
+        [UserAccess(Models.Access.View)]
         public ActionResult ProtectedView()
         {
             return View();

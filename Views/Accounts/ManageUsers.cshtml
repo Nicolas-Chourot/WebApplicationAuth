@@ -16,10 +16,10 @@
                     var userId = $(this).attr("userId");
                     UsersPanel.confirmedCommand($(this).attr("title") + "?", "/Accounts/DeleteUser/" + userId);
                 })
-                $(".promoteCmd").click(function (e) {
+                $(".setUserAccessCmd").click(function (e) {
                     var userId = $(this).attr("userId");
                     var access = $(this).attr("access");
-                    UsersPanel.confirmedCommand($(this).attr("title") + "?", `/Accounts/PromoteUser?userid=${userId}&access=${access}`);
+                    UsersPanel.confirmedCommand($(this).attr("title") + "?", `/Accounts/SetUserAccess?userid=${userId}&access=${access}`);
                 })
                 $(".blockCmd").click(function (e) {
                     var userId = $(this).attr("userId");

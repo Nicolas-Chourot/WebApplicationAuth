@@ -34,13 +34,13 @@
                 @Helper.Image(@statusIcon, "UserXSmallAvatar")
             </div>
 
-            <div class="promoteCmd icon @selectViewAccess" userId="@item.Id" title="Réduire les droits en lecture seule à l'usager @item.Name" access="@((int)Models.Access.View)">
+            <div class="setUserAccessCmd icon @selectViewAccess" userId="@item.Id" title="Réduire les droits en lecture seule à l'usager @item.Name" access="@((int)Models.Access.View)">
                 @Helper.Image(ViewAccessIcon, "UserXSmallAvatar")
             </div>
-            <div class="promoteCmd icon @selectWriteAccess" userId="@item.Id" title="Donnez les droits en lecture/écriture à l'usager  @item.Name" access="@((int)Models.Access.Write)">
+            <div class="setUserAccessCmd icon @selectWriteAccess" userId="@item.Id" title="Donnez les droits en lecture/écriture à l'usager  @item.Name" access="@((int)Models.Access.Write)">
                 @Helper.Image(WriteAccessIcon, "UserXSmallAvatar")
             </div>
-            <div class="promoteCmd icon @selectAdminAccess" userId="@item.Id" title="Donnez les droits administrateur à l'usager  @item.Name" access="@((int)Models.Access.Admin)">
+            <div class="setUserAccessCmd icon @selectAdminAccess" userId="@item.Id" title="Donnez les droits administrateur à l'usager  @item.Name" access="@((int)Models.Access.Admin)">
                 @Helper.Image(AdminAccessIcon, "UserXSmallAvatar")
             </div>
 
