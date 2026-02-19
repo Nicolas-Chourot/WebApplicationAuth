@@ -294,8 +294,15 @@ namespace Controllers
                     user.Access = (Models.Access)access;
 
                     DB.Users.Update(user);
+                    string accessTitle = "Anonyme";
+                    switch (user.Access)
+                    {
+                        case Models.Access.View: accessTitle = "Lecture seule"; break;
+                        case Models.Access.Write: accessTitle = "Lecture/Écriture"; break;
+                        case Models.Access.Admin: accessTitle = "Administrateur"; break;
+                    }
 
-                    string message = "Vos ayant droits ont été modifiés : " + user.Access.ToString();
+                    string message = "Vos ayant droits ont été modifiés : " + accessTitle;
 
                     AccountsEmailing.SendEmailUserStatusChanged(message, user);
                 }

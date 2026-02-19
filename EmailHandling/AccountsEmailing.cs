@@ -40,7 +40,7 @@ namespace EmailHandling
 
     public static class AccountsEmailing
     {
-        const string ApplicationName = "Gestionnaire de registres";
+        const string ApplicationName = "Application Web";
 
         public static string GetServerDomaine()
         {
