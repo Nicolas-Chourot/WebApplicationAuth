@@ -16,8 +16,8 @@ namespace DAL
         #endregion
 
         static public UsersRepository Users { get; set; }
-                 = new UsersRepository();       // Produce a ordered list of categories without duplicate
-        
+            = new UsersRepository();
+
         static public NotificationsRepository Notifications { get; set; }
             = new NotificationsRepository();
 

@@ -250,6 +250,7 @@ namespace Controllers
             if (DB.Users.Update(user))
             {
                 Models.User.ConnectedUser = DB.Users.Get(user.Id);
+                DB.Notifications.Push(user.Id, "Votre profil a été modifié avec succès!");
             }
             if (newEmail)
                 return Redirect("/Accounts/Login?message=Un courriel de vérification d'adresse de courriel vous a été envoyé!");

@@ -91,6 +91,10 @@
     background-repeat: no-repeat !important;
 }
 
+.transparentBackground {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 .access {
     width: 40px;
     height: 40px;

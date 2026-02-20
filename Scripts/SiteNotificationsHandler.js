@@ -1,7 +1,7 @@
 ﻿function StartNotificationsHandler() {
     //alert("Notifications Handler installed");
     Notification.requestPermission().then((permission) => {
-        console.log("Global Panel Refresh Rate :", GPRR, " seconds");
+        console.log("Global Panel Refresh Rate :", 5, " seconds");
         // retreive notifications from sessionStorage
         let notifications = JSON.parse(sessionStorage.getItem("Notifications"));
         if (notifications == null)
@@ -16,8 +16,8 @@
                 url: "/Notifications/Pop",
                 success: notification => {
                     if (notification != null) {
-                        var icon = "/Content/UI-Images/PhotoCloudLogo.png";
-                        var title = "PhotosManager";
+                        var icon = "/WebApp.png";
+                        var title = "Web Application";
                         var message = notification.Message;
                         var avatar = notification.Avatar;
                         if (permission === "granted")
@@ -25,7 +25,7 @@
 
                         let date = new Date().toLocaleString("fr-FR");
                         message = message.replace("[", "<span></span><span>[").replace("]","]</span>");
-                        message = `<div class="smallAvatar transparentBackground" style="background-image: url('${avatar}'); " title="Nicolas Chourot"></div>${message}`;
+                        message = `<div class="UserSmallAvatar transparentBackground" style="background-image: url('${avatar}'); " title="Nicolas Chourot"></div>${message}`;
                         addNotification(date, message);
 
                         // store notification in sessionStorage
@@ -35,7 +35,7 @@
                     }
                 }
             })
-        }, GPRR * 1000);
+        }, 5 * 1000);
     });
 }
 

@@ -15,6 +15,7 @@
 
     <div class="page">
         @{
+            bool connected = Models.User.ConnectedUser != null;
             Html.RenderPartial("_header");
         }
 
@@ -38,6 +39,12 @@
     <!-- Insertion des regroupements de scripts -->
     @Scripts.Render("~/bundles/scripts")
 
+    <script>
+     $(() => {
+         if ("@connected" != "False")
+             StartNotificationsHandler();
+     })
+    </script>
     <!-- Insertion de script local aux vues -->
     @RenderSection("scripts", required: false)
 

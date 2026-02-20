@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PhotosManager.Models
+namespace Models
 {
     public class NotificationsRepository : Repository<Notification>
     {

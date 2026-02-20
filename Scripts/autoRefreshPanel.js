@@ -11,6 +11,7 @@
 
 let DefaultPeriodicRefreshRate = 15 /* 15 seconds */;
 let EndSessionAction = '/Accounts/Login';
+
 class AutoRefreshedPanel {
     constructor(panelId, contentServiceURL, refreshRate = DefaultPeriodicRefreshRate, postRefreshCallback = null) {
         this.contentServiceURL = contentServiceURL;
@@ -37,6 +38,12 @@ class AutoRefreshedPanel {
             if (this.postRefreshCallback != null) this.postRefreshCallback();
         }
     }
+    redirect() {
+        if (EndSessionAction != "")
+            window.location = EndSessionAction + "?message=Votre session a été fermée par le modérateur.&success=false";
+        else
+            alert("Illegal access!");
+    }
     refresh(forced = false) {
         if (!this.paused) {
             $.ajax({
@@ -46,14 +53,7 @@ class AutoRefreshedPanel {
                     if (htmlContent != "blocked") 
                         this.replaceContent(htmlContent);
                 },
-                statusCode: {
-                    401: function () {
-                        if (EndSessionAction != "")
-                            window.location = EndSessionAction + "?message=Votre session a été fermée!&success=false";
-                        else
-                            alert("Illegal access!");
-                    }
-                }
+                statusCode: { 401: this.redirect }
             })
         }
     }
@@ -67,14 +67,7 @@ class AutoRefreshedPanel {
                     moreCallBack(params);
 
             },
-            statusCode: {
-                500: function () {
-                    if (EndSessionAction != "")
-                        window.location = EndSessionAction + "?message=Votre session a été fermée!&success=false";
-                    else
-                        alert("Illegal access!");
-                }
-            }
+            statusCode: { 500: this.redirect }
         });
     }
     postCommand(url, data, moreCallBack = null) {
@@ -88,14 +81,7 @@ class AutoRefreshedPanel {
                 if (moreCallBack != null)
                     moreCallBack(params);
             },
-            statusCode: {
-                500: function () {
-                    if (EndSessionAction != "")
-                        window.location = EndSessionAction + "?message=Votre session a été fermée!&success=false";
-                    else
-                        alert("Illegal access!");
-                }
-            }
+            statusCode: { 500: this.redirect }
         });
     }
 
