@@ -55,6 +55,7 @@ class AutoRefreshedPanel {
                 success: (htmlContent) => {
                     if (htmlContent != "blocked")
                         this.replaceContent(htmlContent);
+                    // delaying hide out otherwise it will be to shortly shown
                     clearTimeout(timerHideUpdateView);
                     timerHideUpdateView = setTimeout(() => { $("#updatingView").hide() },1500);
                 },
