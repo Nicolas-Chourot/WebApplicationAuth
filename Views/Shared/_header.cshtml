@@ -1,4 +1,7 @@
-﻿@{
+﻿<!--
+    Cette vue partielle a pour mission de construire l'entête et les menus en fonction de l'action    
+-->
+@{
     string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
     string action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
 
@@ -23,30 +26,24 @@
 <div class="section roundedBorder">
     <div class="headerMenu">
         <i class="siteIcon"></i>
+        <div class="pageTitle"> @ViewBag.PageTitle </div>
         <!-- Direct action context command icons -->
         @switch (action)
         {
-            case "login":
-                <div class="pageTitle">
-                    Application Web
-                </div>
-                break;
+            case "login": break;
             case "subscribe":
-                <div class="pageTitle">Inscription </div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a class="cmdIcon fa fa-square-xmark" title="Annuler" onclick="history.back()"></a>
                 </div>
                 break;
             case "editprofil":
-                <div class="pageTitle">Profil <span style="font-size:0.75em;color:dodgerblue">[@access]</span></div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a class="cmdIcon fa fa-square-xmark" title="Annuler" onclick="history.back()"></a>
                 </div>
                 break;
-            case "protectedview": // todo : Set the home action name
-                <div class="pageTitle">Application Web</div>
+            case "protectedview": 
                 <div id="mainMenuPanel" class="menu">
                     @if (userCanWrite)
                     {
@@ -55,11 +52,11 @@
                     <a href="/@controller/ToggleSearch" id="cmdToggleSearch" class="cmdIcon fa fa-search" title="Recherche..."></a>
                     <!-- Dropdown menu -->
                     <div id="menu" class="dropdown ms-auto">
-                        <!-- Menu acces icon -->
+                        <!-- Drop down menu acces icon -->
                         <div data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="cmdIcon fa fa-bars" title="Menu"></i>
                         </div>
-                        <!-- Menu items -->
+                        <!-- Drop down menu items -->
                         <div class="dropdown-menu noselect" id="DDMenu" style="width:300px !important">
                             <div class="dropdown-item item-layout">
                                 <i class="menuIcon fa fa-address-card"></i>
@@ -72,6 +69,7 @@
                             @if (userIsAdmin)
                             {
                                 <div class="dropdown-divider"></div>
+
                                 <div class="dropdown-item item-layout">
                                     <i class="menuIcon fa fa-users"></i>
                                     <a href="/Accounts/ManageUsers">
@@ -91,7 +89,9 @@
                                     </a>
                                 </div>
                             }
+
                             <div class="dropdown-divider"></div>
+
                             <div class="dropdown-item item-layout">
                                 <i class="menuIcon fa fa-info-circle"></i>
                                 <a href="/@controller/About">À propos...</a>
@@ -101,50 +101,31 @@
                 </div>
                 break;
             case "details":
-                <div class="pageTitle">Détails</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="/@controller/Edit" class="cmdIcon fa fa-pen-to-square" title="Modifier..."></a>
                     <i class="cmdIcon fa fa-trash-can"
                        title="Effacer"
-                       onclick="bootbox.confirm('<b style=color:red>Effacer ?</h3>', function(result){ if (result) window.location = '/@controller/Delete'; })">
+                       onclick="bootbox.confirm(`<b style=color:red>Effacer ?</h3>`, function(result){ if (result) window.location = '/@controller/Delete'; })">
                     </i>
                     <a href="@index" class="cmdIcon fa fa-square-xmark" title="retour"></a>
                 </div>
                 break;
             case "create":
-                <div class="pageTitle">Ajout</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a href="@index" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
             case "edit":
-                <div class="pageTitle">Modification</div>
                 <div id="mainMenuPanel" class="menu">
                     <i class="cmdIcon submitCmd fa fa-circle-check" title="Soumettre" onclick="document.getElementById('submit').click()"></i>
                     <a href="/@controller/Details/@currentId" class="cmdIcon fa fa-square-xmark" title="Annuler"></a>
                 </div>
                 break;
             case "loginsjournal":
-                <div class="pageTitle">Journal des connexions</div>
-                <div id="mainMenuPanel" class="menu">
-                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
-                </div>
-                break;
             case "eventsjournal":
-                <div class="pageTitle">Journal des activitées</div>
-                <div id="mainMenuPanel" class="menu">
-                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
-                </div>
-                break;
             case "manageusers":
-                <div class="pageTitle">Gestion des usagers</div>
-                <div id="mainMenuPanel" class="menu">
-                    <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
-                </div>
-                break;
             case "about":
-                <div class="pageTitle">À propos</div>
                 <div id="mainMenuPanel" class="menu">
                     <a href="@index" class="cmdIcon fa fa-square-xmark" title="Retour"></a>
                 </div>

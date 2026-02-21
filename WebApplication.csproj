@@ -176,6 +176,7 @@
     <Content Include="Scripts\SiteNotificationsHandler.js" />
     <Content Include="Scripts\SiteScripts.js" />
     <Content Include="Scripts\validation.js" />
+    <Content Include="updatingView.gif" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

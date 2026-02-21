@@ -11,7 +11,7 @@
 
 let DefaultPeriodicRefreshRate = 15 /* 15 seconds */;
 let EndSessionAction = '/Accounts/Login';
-
+let timerHideUpdateView = null;
 class AutoRefreshedPanel {
     constructor(panelId, contentServiceURL, refreshRate = DefaultPeriodicRefreshRate, postRefreshCallback = null) {
         this.contentServiceURL = contentServiceURL;
@@ -24,6 +24,7 @@ class AutoRefreshedPanel {
             this.paused = false;
             setInterval(() => { this.refresh() }, this.refreshRate);
         }
+        $("#updatingView").hide();
     }
     pause() {
         this.paused = true;
@@ -39,6 +40,7 @@ class AutoRefreshedPanel {
         }
     }
     redirect() {
+        $("#updatingView").hide();
         if (EndSessionAction != "")
             window.location = EndSessionAction + "?message=Votre session a été fermée par le modérateur.&success=false";
         else
@@ -46,12 +48,15 @@ class AutoRefreshedPanel {
     }
     refresh(forced = false) {
         if (!this.paused) {
+         $("#updatingView").show();
             $.ajax({
                 url: this.contentServiceURL + (forced ? (this.contentServiceURL.indexOf("?") > -1 ? "&" : "?") + "forceRefresh=true" : ""),
                 dataType: "html",
                 success: (htmlContent) => {
-                    if (htmlContent != "blocked") 
+                    if (htmlContent != "blocked")
                         this.replaceContent(htmlContent);
+                    clearTimeout(timerHideUpdateView);
+                    timerHideUpdateView = setTimeout(() => { $("#updatingView").hide() },1500);
                 },
                 statusCode: { 401: this.redirect }
             })

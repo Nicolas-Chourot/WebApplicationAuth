@@ -50,6 +50,12 @@
     padding: var(--gap);
 }
 
+.footerPanel {
+    display: grid !important;
+    grid-template-columns: auto 24px !important;
+    align-items: center;
+}
+
 
 .ellipsis {
     white-space: nowrap;
