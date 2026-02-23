@@ -25,19 +25,23 @@ namespace Controllers
 
             protected override bool AuthorizeCore(HttpContextBase httpContext)
             {
+                bool ajaxRequest = HttpContext.Current.Request.Headers[13] == "cors";
                 try
                 {
                     try
                     {
                         if (User.ConnectedUser == null)
                         {
-                            httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
+                            if (!ajaxRequest)
+                                httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                             return false;
                         }
                         else
                         {
                             if (User.ConnectedUser.Access < RequiredAccess || User.ConnectedUser.Blocked)
                             {
+                                if (!ajaxRequest)
+                                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                                 return false;
                             }
                             return true;
