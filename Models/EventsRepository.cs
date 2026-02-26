@@ -27,7 +27,7 @@ namespace Models
             {
                 BeginTransaction();
                 DateTime dayAfter = day.AddDays(1);
-                List<Event> events = DB.Events.ToList().Where(l => l.CreationDate >= day && l.CreationDate < dayAfter).ToList();
+                List<Event> events = DB.Events.ToList().Where(l => l.CreationDate >= day && l.CreationDate < dayAfter).ToList().Copy();
                 // Notice: You can delete items of List<T> collection in a foreach loop but it will fail with items of IEnumerable<T> collection
                 foreach (Event @event in events)
                 {

@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace EmailHandling
         public string Email { get; set; }
         public string VerificationCode { get; set; }
         public int UserId { get; set; }
+        [JsonIgnore]
+        public User User => DB.Users.Get(UserId);
     }
 
     public class RenewPasswordCommand : Record
@@ -36,6 +39,8 @@ namespace EmailHandling
         }
         public string VerificationCode { get; set; }
         public int UserId { get; set; }
+        [JsonIgnore]
+        public User User => DB.Users.Get(UserId);
     }
 
     public static class AccountsEmailing

@@ -76,7 +76,7 @@ namespace PhotosManager.Models
             {
                 BeginTransaction();
                 DateTime dayAfter = day.AddDays(1);
-                List<Login> logins = DB.Logins.ToList().Where(l => l.LoginDate >= day && l.LoginDate < dayAfter).ToList();
+                List<Login> logins = DB.Logins.ToList().Where(l => l.LoginDate >= day && l.LoginDate < dayAfter).ToList().Copy();
                 // Notice: You can delete items of List<T> collection in a foreach loop but it will fail with items of IEnumerable<T> collection
                 foreach (Login login in logins)
                 {

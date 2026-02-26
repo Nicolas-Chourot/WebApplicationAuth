@@ -1,4 +1,5 @@
 using DAL;
+using EmailHandling;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,6 +33,28 @@ namespace WebApplication
             appTimer.Interval = 10000000; // 10 second in milliseconds
             appTimer.Elapsed += new ElapsedEventHandler(OnTimerElapsed);
             appTimer.Enabled = true; // Start the timer
+
+            // cleaning
+            foreach (var login in DB.Logins.ToList().Copy())
+            {
+                if (login.User == null) DB.Logins.Delete(login.Id);
+            }
+            foreach (var uvEmail in DB.UnverifiedEmails.ToList().Copy())
+            {
+                if (uvEmail.User == null) DB.UnverifiedEmails.Delete(uvEmail.Id);
+            }
+            foreach (RenewPasswordCommand renewPC in DB.RenewPasswordCommands.ToList().Copy())
+            {
+                if (renewPC.User == null) DB.RenewPasswordCommands.Delete(renewPC.Id);
+            }
+            foreach (Models.Event @event in DB.Events.ToList().Copy())
+            {
+                if (@event.User == null) DB.RenewPasswordCommands.Delete(@event.Id);
+            }
+            foreach (var notification in DB.Notifications.ToList().Copy())
+            {
+                if (notification.User == null || notification.User == null) DB.Notifications.Delete(notification.Id);
+            }
         }
 
         private static void OnTimerElapsed(object sender, ElapsedEventArgs e)
