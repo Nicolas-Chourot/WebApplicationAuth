@@ -93,6 +93,7 @@ namespace Controllers
             }
             Models.User.ConnectedUser = loginUser;
             loginUser.Online = true;
+            DB.Logins.Add(Models.User.ConnectedUser.Id);
             DB.Events.Add("Login");
             return Redirect(RouteConfig.DefaultAction());
         }
