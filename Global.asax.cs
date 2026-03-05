@@ -25,7 +25,6 @@ namespace WebApplication
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-
             // cleaning
             foreach (var login in DB.Logins.ToList().Copy())
             {
@@ -55,9 +54,9 @@ namespace WebApplication
         }
         protected void Session_End()
         {
-            var connectedUser = Models.User.ConnectedUser;
+           /* var connectedUser = Models.User.ConnectedUser;
             if (connectedUser != null)
-                connectedUser.Online = false;
+                connectedUser.Online = false;*/
         }
         protected void Application_End(object sender, EventArgs e)
         {

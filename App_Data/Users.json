@@ -9,5 +9,16 @@
     "Notify": true,
     "Avatar": "/App_Assets/Users/5aa8957d-e980-4cac-b915-aaa63d0909f1.jpeg",
     "Id": 1
+  },
+  {
+    "Name": "Charlot",
+    "Email": "charlot@yopmail.com",
+    "Password": "WrlJ2Wm2NgzA2bjAfyXIheughlqhxwl1Niuv60gVij8=M54D55bnJyGmTUGOmB1gdr1cjxU=",
+    "Access": 1,
+    "Blocked": false,
+    "Verified": true,
+    "Notify": true,
+    "Avatar": "/App_Assets/Users/no_avatar.png",
+    "Id": 2
   }
 ]
