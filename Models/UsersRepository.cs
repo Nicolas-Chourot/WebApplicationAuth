@@ -76,6 +76,9 @@ namespace Models
                 {
                     BeginTransaction();
                     userToDelete.DeleteLogins();
+                    /* 
+                     * TODO : Delete user other related data
+                     */
                     base.Delete(userId);
                     EndTransaction();
                     return true;
