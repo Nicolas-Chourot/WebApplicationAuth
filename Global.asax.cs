@@ -14,8 +14,6 @@ namespace WebApplication
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static Timer appTimer;
-
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -27,12 +25,6 @@ namespace WebApplication
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-            // DB.Users.ResetAllUsersOnlineStatus(); obselete
-
-            appTimer = new Timer();
-            appTimer.Interval = 10000000; // 10 second in milliseconds
-            appTimer.Elapsed += new ElapsedEventHandler(OnTimerElapsed);
-            appTimer.Enabled = true; // Start the timer
 
             // cleaning
             foreach (var login in DB.Logins.ToList().Copy())
@@ -57,13 +49,6 @@ namespace WebApplication
             }
         }
 
-        private static void OnTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            // Your cyclic function code goes here
-            // Be careful with threading, as this runs on a thread pool thread
-            System.Diagnostics.Debug.WriteLine("Cyclic function ran at: " + DateTime.Now);
-            
-        }
         protected void Session_Start()
         {
             // do session intialisations
@@ -76,11 +61,7 @@ namespace WebApplication
         }
         protected void Application_End(object sender, EventArgs e)
         {
-            if (appTimer != null)
-            {
-                appTimer.Enabled = false;
-                appTimer.Dispose();
-            }
+
         }
     }
 }

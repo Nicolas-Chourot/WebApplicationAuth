@@ -11,16 +11,6 @@
     bool userIsAdmin = userConnected ? Models.User.ConnectedUser.IsAdmin : false;
     bool userCanWrite = userConnected ? Models.User.ConnectedUser.CanWrite : false;
     string index = RouteConfig.DefaultAction();
-    string access = "";
-    if (userConnected)
-    {
-        switch (Models.User.ConnectedUser.Access)
-        {
-            case Models.Access.View: access = "Lecture seule"; break;
-            case Models.Access.Write: access = "Lecture/Écriture"; break;
-            case Models.Access.Admin: access = "Administrateur"; break;
-        }
-    }
 }
 
 <div class="section roundedBorder">
