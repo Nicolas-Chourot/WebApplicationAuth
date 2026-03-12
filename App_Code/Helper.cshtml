@@ -350,4 +350,12 @@
         }
     }
 }
-
+@helper YoutubePlayer(string youtubeId, string yt_class = "mediaPalyerBig")
+{
+    <iframe class="mediaPlayerBig"
+            src="https://www.youtube.com/embed/@youtubeId"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+}

@@ -42,7 +42,7 @@ namespace Controllers
             {
                 if (success) DB.Events.Add("Logout"); else DB.Events.Add("Expired/blocked");
                 if (Models.User.ConnectedUser != null)
-                    DB.Logins.UpdateLogout(Models.User.ConnectedUser.Id);
+                    DB.Logins.UpdateLogoutByUserId(Models.User.ConnectedUser.Id);
                 Models.User.ConnectedUser.Online = false;
                 Models.User.ConnectedUser = null;
             }
